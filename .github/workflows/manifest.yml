@@ -1,76 +1,37 @@
-name: manifest
+name: 제출 검증
 
-# 멤버가 data/members/ 에 JSON 하나만 올리면 manifest.json 을 자동으로 다시 만든다.
-# (manifest 는 이 경로 밖이라 워크플로가 스스로를 다시 트리거하지 않는다)
+# 멤버가 data/members/ 에 JSON 을 올리면 검증하고, 통과하면 수익률까지 다시 계산한다.
+# 검증에 걸리면 커밋에 실패 표시가 뜨고, 요약에 무엇을 고쳐야 하는지 적힌다.
 on:
   push:
-    paths: ["data/members/**"]
+    paths:
+      - "data/members/**"
+      - "data/instruments.json"
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
 jobs:
-  rebuild:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: manifest 재생성 + 제출 검증
-        run: |
-          python3 - <<'PY'
-          import json, pathlib, sys
+      - name: 제출 검증 + manifest 재생성
+        id: validate
+        continue-on-error: true
+        run: python3 tools/validate.py
 
-          root = pathlib.Path("data/members")
-          snaps, bad = {}, []
+      - name: 수익률 재계산
+        if: steps.validate.outcome == 'success'
+        run: python3 tools/prices.py | tee -a .summary.md
 
-          for f in sorted(root.glob("*/*.json")):
-              date = f.parent.name
-              try:
-                  d = json.loads(f.read_text(encoding="utf-8"))
-              except Exception as e:
-                  bad.append(f"{f} — JSON 문법 오류: {e}")
-                  continue
-
-              mid = d.get("member")
-              if not mid:
-                  bad.append(f"{f} — member 없음"); continue
-              if d.get("date") and d["date"] != date:
-                  bad.append(f"{f} — date({d['date']})가 폴더명({date})과 다름"); continue
-
-              hs = d.get("holdings") or []
-              if not hs:
-                  bad.append(f"{f} — holdings 비어 있음"); continue
-              try:
-                  tot = sum(float(h["weight"]) for h in hs)
-              except Exception as e:
-                  bad.append(f"{f} — weight 읽기 실패: {e}"); continue
-              if abs(tot - 100) > 0.5:
-                  bad.append(f"{f} — weight 합이 {tot:.2f} (100이어야 함)"); continue
-
-              for sc in d.get("scopes") or []:
-                  st = sum(float(h["weight"]) for h in sc.get("holdings") or [])
-                  if abs(st - 100) > 0.5:
-                      bad.append(f"{f} — scope '{sc.get('name')}' weight 합이 {st:.2f}")
-
-              snaps.setdefault(date, []).append({"id": mid, "file": f.name})
-
-          out = {"club": "투자 스터디", "baseCurrency": "KRW",
-                 "snapshots": [{"date": k, "members": sorted(v, key=lambda x: x["file"])}
-                               for k, v in sorted(snaps.items())]}
-          pathlib.Path("data/manifest.json").write_text(
-              json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
-          n = sum(len(v) for v in snaps.values())
-          summary = [f"스냅샷 {len(snaps)}회차 · 제출 {n}건 반영"]
-          if bad:
-              summary += ["", "### 반영되지 않은 파일", *[f"- {b}" for b in bad]]
-          pathlib.Path(".summary.md").write_text("\n".join(summary), encoding="utf-8")
-          print("\n".join(summary))
-          sys.exit(1 if bad else 0)
-          PY
-
-      - name: 요약 출력
+      - name: 요약
         if: always()
         run: cat .summary.md >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
 
@@ -80,10 +41,16 @@ jobs:
           rm -f .summary.md
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [ -n "$(git status --porcelain data/manifest.json)" ]; then
-            git add data/manifest.json
-            git commit -m "manifest 갱신 [skip ci]"
-            git push
+          git add -A data/
+          if git diff --cached --quiet; then
+            echo "변경 없음"
           else
-            echo "manifest 변경 없음"
+            git commit -m "데이터 갱신 [skip ci]"
+            git push
           fi
+
+      - name: 검증 실패 반영
+        if: steps.validate.outcome != 'success'
+        run: |
+          echo "제출 검증에 걸린 항목이 있습니다. 위 요약을 확인하세요."
+          exit 1

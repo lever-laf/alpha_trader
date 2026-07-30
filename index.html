@@ -276,6 +276,7 @@
 let INSTRUMENTS = {}, ALIAS = {}, THEME_COLOR = {};
 let CLUB = { members: [] };
 let allDates = [], latestDate = "";
+let RESULTS = null;
 
 const MEMBER_COLOR = ["var(--s1)","var(--s2)","var(--s3)","var(--s4)",
                       "var(--s5)","var(--s6)","var(--s7)","var(--s8)"];
@@ -337,10 +338,9 @@ function analyse(snap) {
    ══════════════════════════════════════════════════════════════ */
 let active = "__all__";
 
-function memberReturn(m) {
-  const s = m.snapshots;
-  return s.length ? s[s.length - 1].index - 100 : 0;
-}
+const heldOf = m => (RESULTS && RESULTS.onHold && RESULTS.onHold[m.id]) || null;
+const idxOf = m => m.index ?? (m.snapshots.length ? m.snapshots[m.snapshots.length - 1].index : 100);
+function memberReturn(m) { return idxOf(m) - 100; }
 
 function renderTabs() {
   const tabs = document.getElementById("tabs");
@@ -359,14 +359,14 @@ function renderTabs() {
 function renderHero() {
   const el = document.getElementById("hero");
   if (active === "__all__") {
-    const rets = CLUB.members.map(memberReturn);
+    const rets = CLUB.members.filter(x => !heldOf(x)).map(memberReturn);
     const avg = rets.reduce((a, b) => a + b, 0) / rets.length;
     const cls = avg > 0.05 ? "pos" : avg < -0.05 ? "neg" : "flat";
     el.innerHTML = `
       <div>
         <div class="who">멤버 평균 누적 수익률</div>
         <div class="ret ${cls}">${signed(avg)}%</div>
-        <div class="cap">${allDates.length < 2
+        <div class="cap">${!rets.length ? "계산 가능한 멤버 없음" : allDates.length < 2
           ? "첫 스냅샷 — 전원 지수 100.0에서 출발"
           : `최고 ${signed(Math.max(...rets))}% · 최저 ${signed(Math.min(...rets))}%`}</div>
       </div>
@@ -378,6 +378,14 @@ function renderHero() {
   }
   const m = CLUB.members.find(x => x.id === active);
   const last = m.snapshots[m.snapshots.length - 1];
+  const held = heldOf(m);
+  if (held) {
+    el.innerHTML = `<div><div class="who">${esc(m.id)} · 누적 수익률</div>
+      <div class="ret flat" style="font-size:34px">계산 보류</div>
+      <div class="cap">시세를 받지 못한 종목이 있어 수익률을 내지 않음 — ${esc(held.join(", "))}</div></div>
+      <div class="aside"><div><div class="k">기준일</div><div class="v">${last.date.slice(5)}</div></div></div>`;
+    return;
+  }
   const r = memberReturn(m);
   const cls = r > 0.05 ? "pos" : r < -0.05 ? "neg" : "flat";
   el.innerHTML = `
@@ -389,31 +397,38 @@ function renderHero() {
         : `${m.snapshots[0].date} 시작 · 스냅샷 ${m.snapshots.length}회`}</div>
     </div>
     <div class="aside">
-      <div><div class="k">누적 지수</div><div class="v">${f1(last.index)}</div></div>
+      <div><div class="k">누적 지수</div><div class="v">${f1(idxOf(m))}</div></div>
       <div><div class="k">기준일</div><div class="v">${last.date.slice(5)}</div></div>
     </div>`;
 }
 
-/* 타임라인 — 컨테이너 실측 픽셀로 그려 왜곡 없음 */
+/* 타임라인 — 컨테이너 실측 픽셀로 그려 왜곡 없음. results.json 이 있으면 일별 곡선 */
 function drawTimeline(box) {
   const W = box.clientWidth, H = 250;
   if (!W) return;
   const PL = 46, PR = 18, PT = 14, PB = 28;
   const iw = W - PL - PR, ih = H - PT - PB;
 
-  const vals = CLUB.members.flatMap(m => m.snapshots.map(s => s.index));
-  let lo = Math.min(100, ...vals), hi = Math.max(100, ...vals);
-  if (hi - lo < 10) { const c = (hi + lo) / 2; lo = c - 5; hi = c + 5; }
-  else { const p = (hi - lo) * 0.15; lo -= p; hi += p; }
+  const ser = CLUB.members.filter(m => !heldOf(m)).map((m, i) => ({
+    id: m.id, c: MEMBER_COLOR[i % 8],
+    pts: (m.series && m.series.length ? m.series : m.snapshots.map(s => [s.date, s.index]))
+  })).filter(x => x.pts.length);
+  if (!ser.length) { box.innerHTML = ""; return; }
 
-  const n = allDates.length;
-  const X = i => n < 2 ? PL : PL + (iw * i) / (n - 1);
+  const dates = [...new Set(ser.flatMap(x => x.pts.map(p => p[0])))].sort();
+  const t0 = Date.parse(dates[0]), span = Math.max(Date.parse(dates[dates.length - 1]) - t0, 1);
+  const single = dates.length < 2;
+  const X = d => single ? PL : PL + (iw * (Date.parse(d) - t0)) / span;
+
+  const vals = ser.flatMap(x => x.pts.map(p => p[1]));
+  let lo = Math.min(100, ...vals), hi = Math.max(100, ...vals);
+  if (hi - lo < 2) { const c = (hi + lo) / 2; lo = c - 1; hi = c + 1; }
+  else { const p = (hi - lo) * 0.15; lo -= p; hi += p; }
   const Y = v => PT + ih - (ih * (v - lo)) / (hi - lo);
 
-  const ticks = (lo < 100 && hi > 100) ? [lo, 100, hi] : [lo, (lo + hi) / 2, hi];
   let g = "";
-  ticks.forEach(t => {
-    const base = Math.abs(t - 100) < 1e-9;   /* 100 = 원금 기준선 */
+  ((lo < 100 && hi > 100) ? [lo, 100, hi] : [lo, (lo + hi) / 2, hi]).forEach(t => {
+    const base = Math.abs(t - 100) < 1e-9;
     g += `<line x1="${PL}" y1="${Y(t).toFixed(1)}" x2="${W - PR}" y2="${Y(t).toFixed(1)}"
             stroke="${base ? "var(--rule-firm)" : "var(--grid)"}" stroke-width="1"
             ${base ? 'stroke-dasharray="3 4"' : ""}></line>
@@ -421,32 +436,30 @@ function drawTimeline(box) {
             fill="var(--ink-3)" font-size="10.5" font-family="var(--mono)">${f1(t)}</text>`;
   });
 
-  allDates.forEach((d, i) => {
-    g += `<text x="${X(i).toFixed(1)}" y="${H - 8}" text-anchor="${n < 2 ? "start" : i === 0 ? "start" : i === n - 1 ? "end" : "middle"}"
+  const ticks = single ? [dates[0]]
+    : [dates[0], dates[Math.floor(dates.length / 2)], dates[dates.length - 1]];
+  ticks.forEach((d, i) => {
+    const anchor = single || i === 0 ? "start" : i === ticks.length - 1 ? "end" : "middle";
+    g += `<text x="${X(d).toFixed(1)}" y="${H - 8}" text-anchor="${anchor}"
             fill="var(--ink-3)" font-size="10.5" font-family="var(--mono)">${d.slice(2)}</text>`;
   });
 
-  if (n < 2) {
+  if (single) {
     g += `<line x1="${PL + 8}" y1="${Y(100).toFixed(1)}" x2="${W - PR}" y2="${Y(100).toFixed(1)}"
             stroke="var(--ink-3)" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"></line>
           <text x="${W - PR}" y="${(Y(100) - 14).toFixed(1)}" text-anchor="end"
-            fill="var(--ink-3)" font-size="10.5" font-family="var(--mono)">다음 스냅샷 대기</text>`;
+            fill="var(--ink-3)" font-size="10.5" font-family="var(--mono)">다음 종가 대기</text>`;
   }
 
-  CLUB.members.forEach((m, mi) => {
-    const c = MEMBER_COLOR[mi % 8];
-    const pts = m.snapshots.map(s => [X(allDates.indexOf(s.date)), Y(s.index)]);
-    if (pts.length > 1) {
-      g += `<polyline points="${pts.map(p => p.map(v => v.toFixed(1)).join(",")).join(" ")}"
-              fill="none" stroke="${c}" stroke-width="2"
-              stroke-linejoin="round" stroke-linecap="round"></polyline>`;
+  ser.forEach(x => {
+    if (x.pts.length > 1) {
+      g += `<polyline points="${x.pts.map(p => X(p[0]).toFixed(1) + "," + Y(p[1]).toFixed(1)).join(" ")}"
+              fill="none" stroke="${x.c}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></polyline>`;
     }
-    pts.forEach((p, si) => {
-      const s = m.snapshots[si];
-      g += `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="4.5" fill="${c}"
-              stroke="var(--surface)" stroke-width="2"
-              data-t="${esc(m.id)} · ${s.date}" data-v="지수 ${f1(s.index)} (${signed(s.index - 100)}%)"></circle>`;
-    });
+    const last = x.pts[x.pts.length - 1];
+    g += `<circle cx="${X(last[0]).toFixed(1)}" cy="${Y(last[1]).toFixed(1)}" r="4.5" fill="${x.c}"
+            stroke="var(--surface)" stroke-width="2"
+            data-t="${esc(x.id)} · ${last[0]}" data-v="지수 ${f1(last[1])} (${signed(last[1] - 100)}%)"></circle>`;
   });
 
   box.innerHTML = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"
@@ -595,7 +608,7 @@ function renderOverview() {
           : "구간 수익률을 chain-link한 누적 지수."}</p></header>
       <div class="chart" id="chart"></div>
       <div class="chart-legend">${rows.map(x =>
-        `<span><i style="background:${x.c}"></i>${esc(x.m.id)} <b>${signed(x.r)}%</b></span>`).join("")}</div>
+        `<span><i style="background:${x.c}"></i>${esc(x.m.id)} <b>${heldOf(x.m) ? "보류" : signed(x.r) + "%"}</b></span>`).join("")}</div>
     </section>
 
     <section class="card">
@@ -606,8 +619,10 @@ function renderOverview() {
           <th scope="col">실효 익스포저</th><th scope="col">최대 단일</th></tr></thead>
         <tbody>${rows.map(x => `<tr>
           <th scope="row"><span class="tname"><span class="swatch" style="background:${x.c}"></span>${esc(x.m.id)}</span></th>
-          <td class="${x.r > .05 ? "pos" : x.r < -.05 ? "neg" : ""}">${signed(x.r)}%</td>
-          <td>${f1(x.m.snapshots[x.m.snapshots.length - 1].index)}</td>
+          ${heldOf(x.m)
+            ? `<td colspan="2" style="color:var(--ink-3)">계산 보류</td>`
+            : `<td class="${x.r > .05 ? "pos" : x.r < -.05 ? "neg" : ""}">${signed(x.r)}%</td>
+               <td>${f1(idxOf(x.m))}</td>`}
           <td>${x.a.equity.length}</td>
           <td>${f1(x.a.cash)}%</td>
           <td>${x.a.topTheme ? esc(x.a.topTheme.theme) + " " + f1(x.a.topTheme.w) + "%" : "—"}</td>
@@ -717,7 +732,10 @@ const norm = hs => (hs || []).map(h => ({ t: h.ticker ?? h.t, w: +(h.weight ?? h
 async function boot() {
   const view = document.getElementById("view");
   try {
-    const [man, mst] = await Promise.all([j("data/manifest.json"), j("data/instruments.json")]);
+    const [man, mst, res] = await Promise.all([
+      j("data/manifest.json"), j("data/instruments.json"),
+      j("data/results.json").catch(() => null)]);
+    RESULTS = res;
     INSTRUMENTS = mst.instruments || {};
     ALIAS = mst.alias || {};
     THEME_COLOR = mst.themeColor || {};
@@ -743,12 +761,17 @@ async function boot() {
     CLUB.members.forEach(m => m.snapshots.sort((a, b) => a.date.localeCompare(b.date)));
     if (!CLUB.members.length) throw new Error("멤버 데이터가 비어 있음");
 
+    CLUB.members.forEach(m => {
+      const r = RESULTS && RESULTS.members && RESULTS.members[m.id];
+      if (r) { m.index = r.index; m.series = r.series; }
+    });
+
     allDates = [...new Set(CLUB.members.flatMap(m => m.snapshots.map(s => s.date)))].sort();
     latestDate = allDates[allDates.length - 1];
     active = CLUB.members.length > 1 ? "__all__" : CLUB.members[0].id;
 
     document.getElementById("sub").textContent =
-      `${latestDate} 기준 · 스냅샷 ${allDates.length}회차 · 멤버 ${CLUB.members.length}명 · 기준통화 ${man.baseCurrency || "KRW"}`;
+      `${(RESULTS && RESULTS.asOf) || latestDate} 종가 기준 · 스냅샷 ${allDates.length}회차 · 멤버 ${CLUB.members.length}명 · 기준통화 ${man.baseCurrency || "KRW"}`;
     render();
   } catch (e) {
     document.getElementById("hero").style.display = "none";
