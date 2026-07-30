@@ -1,2 +1,5 @@
 .nobizdoc
 .DS_Store
+
+# gh 토큰에 workflow 스코프가 없어 푸시 불가 — tools/manifest-workflow.yml 로 보관 중
+.github/
