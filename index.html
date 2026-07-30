@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>📊</text></svg>">
+<style>*,*::before,*::after{box-sizing:border-box}*{margin:0}ul,ol{list-style:none;padding:0}img,svg{display:block;max-width:100%}</style>
+<title>투자 스터디 대시보드</title>
+
+<style>
+  :root {
+    color-scheme: light;
+    --bg:#f3f5f8; --surface:#ffffff; --sunken:#f7f8fa;
+    --ink:#0f1319; --ink-2:#4b515d; --ink-3:#848b98;
+    --grid:#e5e8ee; --rule:rgba(15,19,25,.10); --rule-firm:rgba(15,19,25,.16);
+    --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100;
+    --s5:#e87ba4; --s6:#008300; --s7:#4a3aa7; --s8:#e34948;
+    --cash:#9aa1ad;
+    --up:#d03b3b; --down:#2a78d6;
+    --sans:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,"Roboto Mono",monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg:#0a0c10; --surface:#14161a; --sunken:#1a1d22;
+      --ink:#f1f3f7; --ink-2:#a7aeba; --ink-3:#717986;
+      --grid:#24272e; --rule:rgba(255,255,255,.10); --rule-firm:rgba(255,255,255,.18);
+      --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500;
+      --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+      --cash:#6f7681;
+      --up:#e66767; --down:#3987e5;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg:#0a0c10; --surface:#14161a; --sunken:#1a1d22;
+    --ink:#f1f3f7; --ink-2:#a7aeba; --ink-3:#717986;
+    --grid:#24272e; --rule:rgba(255,255,255,.10); --rule-firm:rgba(255,255,255,.18);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500;
+    --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+    --cash:#6f7681;
+    --up:#e66767; --down:#3987e5;
+  }
+
+  body { background:var(--bg); color:var(--ink); font-family:var(--sans);
+         font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1120px; margin:0 auto; padding:36px 20px 72px;
+          display:flex; flex-direction:column; gap:18px; }
+
+  /* ── 헤더 ── */
+  .masthead { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between;
+              gap:10px 24px; padding-bottom:16px; border-bottom:1px solid var(--rule-firm); }
+  .masthead h1 { font-size:24px; font-weight:680; letter-spacing:-.022em; }
+  .masthead .sub { font-family:var(--mono); font-size:12px; color:var(--ink-3);
+                   letter-spacing:.02em; margin-top:4px; }
+  .shield { display:inline-flex; align-items:center; gap:7px; font-family:var(--mono);
+            font-size:11px; letter-spacing:.06em; color:var(--ink-2); background:var(--surface);
+            border:1px solid var(--rule-firm); border-radius:4px; padding:6px 11px; white-space:nowrap; }
+  .shield::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--s6); }
+
+  /* ── 수익률 히어로 ── */
+  .hero { background:var(--surface); border:1px solid var(--rule); border-radius:6px;
+          padding:22px 24px; display:flex; flex-wrap:wrap; align-items:flex-end;
+          justify-content:space-between; gap:18px 32px; }
+  .hero .who { font-family:var(--mono); font-size:11px; letter-spacing:.09em;
+               text-transform:uppercase; color:var(--ink-3); }
+  .hero .ret { font-size:52px; font-weight:660; letter-spacing:-.038em; line-height:1;
+               margin-top:9px; font-variant-numeric:tabular-nums; }
+  .hero .ret.pos { color:var(--up); } .hero .ret.neg { color:var(--down); }
+  .hero .ret.flat { color:var(--ink); }
+  .hero .cap { font-size:13px; color:var(--ink-2); margin-top:8px; }
+  .hero .aside { display:flex; gap:28px; }
+  .hero .aside div { text-align:right; }
+  .hero .aside .k { font-family:var(--mono); font-size:10.5px; letter-spacing:.07em;
+                    text-transform:uppercase; color:var(--ink-3); }
+  .hero .aside .v { font-size:19px; font-weight:620; letter-spacing:-.02em; margin-top:4px;
+                    font-variant-numeric:tabular-nums; }
+
+  /* ── 탭 ── */
+  .tabbar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .tabs { display:flex; gap:4px; flex-wrap:wrap; background:var(--surface);
+          border:1px solid var(--rule); border-radius:6px; padding:4px; }
+  .tabs button { font:inherit; font-size:13.5px; font-weight:560; color:var(--ink-2);
+                 background:transparent; border:0; border-radius:4px; padding:7px 14px;
+                 cursor:pointer; display:inline-flex; align-items:center; gap:8px;
+                 white-space:nowrap; }
+  .tabs button:hover { background:var(--sunken); color:var(--ink); }
+  .tabs.scopes button { font-size:12.5px; padding:5px 11px; }
+  .tabs button[aria-selected="true"] { background:var(--ink); color:var(--surface); }
+  .tabs button .dot { width:8px; height:8px; border-radius:50%; flex:none; }
+  .navhint { font-family:var(--mono); font-size:11px; color:var(--ink-3); letter-spacing:.03em; }
+
+  /* ── 카드 ── */
+  .card { background:var(--surface); border:1px solid var(--rule); border-radius:6px;
+          padding:22px 24px 24px; }
+  .card > header { margin-bottom:18px; }
+  .card h2 { font-size:15px; font-weight:660; letter-spacing:-.012em; }
+  .card .note { font-size:12.5px; color:var(--ink-3); margin-top:3px; line-height:1.5; }
+  .card .note b { color:var(--ink-2); font-weight:600; }
+  main { display:flex; flex-direction:column; gap:18px; }
+
+  /* ── 지표 타일 ── */
+  .tiles { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--rule);
+           border:1px solid var(--rule); border-radius:6px; overflow:hidden; }
+  .tile { background:var(--surface); padding:17px 20px 19px; }
+  .tile .k { font-family:var(--mono); font-size:10.5px; letter-spacing:.07em;
+             color:var(--ink-3); text-transform:uppercase; }
+  .tile .v { font-size:28px; font-weight:640; letter-spacing:-.03em; margin-top:7px;
+             line-height:1.05; font-variant-numeric:tabular-nums; }
+  .tile .v small { font-size:15px; font-weight:560; }
+  .tile .d { font-size:12.5px; color:var(--ink-2); margin-top:5px; }
+
+  .split { display:grid; grid-template-columns:320px 1fr; gap:18px; align-items:stretch; }
+  .split > .card { display:flex; flex-direction:column; }
+  .split .donut-body { flex:1; justify-content:center; }
+  .split .lev-key { margin-top:auto; }
+  .split .lev .rows { margin-bottom:18px; }
+
+  /* ── 도넛 ── */
+  .donut-body { display:flex; flex-direction:column; align-items:center; gap:18px; }
+  .donut-figure { position:relative; width:200px; height:200px; }
+  .donut-figure svg { display:block; width:100%; height:100%; }
+  .donut-figure circle { transition:opacity .12s ease; }
+  .donut-figure:hover circle { opacity:.38; }
+  .donut-figure circle:hover { opacity:1; }
+  .donut-center { position:absolute; inset:0; display:flex; flex-direction:column;
+                  align-items:center; justify-content:center; pointer-events:none; }
+  .donut-center .n { font-size:29px; font-weight:640; letter-spacing:-.03em; line-height:1; }
+  .donut-center .l { font-family:var(--mono); font-size:10px; letter-spacing:.09em;
+                     color:var(--ink-3); text-transform:uppercase; margin-top:6px; }
+  .legend { display:flex; flex-direction:column; width:100%; }
+  .legend li { display:grid; grid-template-columns:10px 1fr auto; align-items:center; gap:10px;
+               padding:7px 0; border-top:1px solid var(--grid); font-size:13.5px; }
+  .legend li:first-child { border-top:0; }
+  .swatch { width:10px; height:10px; border-radius:2px; flex:none; }
+  .legend .pct { font-variant-numeric:tabular-nums; font-weight:600; color:var(--ink); }
+
+  /* ── 가로 막대 ── */
+  .rows { display:flex; flex-direction:column; gap:9px; }
+  .row { display:grid; align-items:center; gap:12px; }
+  .row .lab { font-size:13.5px; color:var(--ink-2); }
+  .row .lab b { color:var(--ink); font-weight:580; }
+  .row .tick { font-family:var(--mono); font-size:11px; color:var(--ink-3); letter-spacing:.03em; }
+  .track { position:relative; height:18px; background:var(--sunken); border-radius:3px; }
+  .fill { position:absolute; top:0; bottom:0; left:0; border-radius:3px; }
+  .val { font-variant-numeric:tabular-nums; font-size:13px; font-weight:600; text-align:right; }
+
+  .lev .row { grid-template-columns:128px 1fr 104px; }
+  .lev .extra { position:absolute; top:0; bottom:0; border-radius:0 3px 3px 0; opacity:.30;
+                border:1px solid currentColor; box-sizing:border-box; }
+  .lev .val { display:flex; justify-content:flex-end; gap:6px; align-items:baseline; }
+  .lev .val .arrow { font-size:11px; color:var(--ink-3); }
+  .lev-key { display:flex; flex-wrap:wrap; gap:6px 20px; padding-top:14px;
+             border-top:1px solid var(--grid); font-size:12.5px; color:var(--ink-2); }
+  .lev-key span { display:inline-flex; align-items:center; gap:7px; }
+  .kbox { width:22px; height:11px; border-radius:2px; background:var(--ink-3); }
+  .kbox.ghost { background:color-mix(in srgb,var(--ink-3) 30%,transparent);
+                border:1px solid var(--ink-3); box-sizing:border-box; }
+
+  .hold .row { grid-template-columns:150px 1fr 62px; }
+  .hold .lab { display:flex; flex-direction:column; gap:1px; line-height:1.25; }
+
+  /* ── 타임라인 ── */
+  .chart { width:100%; }
+  .chart svg { display:block; }
+  .chart-legend { display:flex; flex-wrap:wrap; gap:8px 20px; margin-top:14px; padding-top:13px;
+                  border-top:1px solid var(--grid); font-size:13px; }
+  .chart-legend span { display:inline-flex; align-items:center; gap:8px; color:var(--ink-2); }
+  .chart-legend b { color:var(--ink); font-weight:600; font-variant-numeric:tabular-nums; }
+  .chart-legend i { width:14px; height:3px; border-radius:2px; flex:none; font-style:normal; }
+
+  /* ── 빈 상태 ── */
+  .empty { border:1px dashed var(--rule-firm); border-radius:5px; padding:24px;
+           text-align:center; color:var(--ink-3); font-size:13.5px; line-height:1.65;
+           background:var(--sunken); }
+  .empty b { color:var(--ink-2); font-weight:600; }
+  .quote { font-size:14.5px; line-height:1.7; color:var(--ink); white-space:pre-wrap; }
+
+  /* ── 단계 안내 ── */
+  .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; counter-reset:step;
+           margin-top:16px; }
+  .steps li { counter-increment:step; padding-top:12px; border-top:2px solid var(--grid);
+              font-size:13px; color:var(--ink-2); line-height:1.5; }
+  .steps li::before { content:counter(step); display:block; font-family:var(--mono);
+                      font-size:10.5px; letter-spacing:.08em; color:var(--ink-3); margin-bottom:4px; }
+  .steps li b { color:var(--ink); font-weight:600; }
+
+  /* ── 표 ── */
+  .tablewrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; font-size:13px; min-width:560px; }
+  thead th { text-align:right; font-family:var(--mono); font-size:10.5px; letter-spacing:.06em;
+             text-transform:uppercase; color:var(--ink-3); font-weight:500; padding:0 0 9px;
+             border-bottom:1px solid var(--rule-firm); white-space:nowrap; }
+  thead th:first-child, thead th.l { text-align:left; }
+  tbody td { padding:9px 0; border-bottom:1px solid var(--grid); text-align:right;
+             font-variant-numeric:tabular-nums; }
+  tbody td.l { text-align:left; }
+  tbody th { text-align:left; font-weight:560; padding:9px 0; border-bottom:1px solid var(--grid); }
+  .tname { display:inline-flex; align-items:center; gap:8px; }
+  .tk { font-family:var(--mono); font-size:11.5px; color:var(--ink-3); }
+  tfoot td, tfoot th { padding:11px 0 0; font-weight:640; border-top:1px solid var(--rule-firm);
+                       border-bottom:0; text-align:right; font-variant-numeric:tabular-nums; }
+  tfoot th { text-align:left; }
+  td.pos { color:var(--up); } td.neg { color:var(--down); }
+
+  .foot { font-size:12.5px; color:var(--ink-3); line-height:1.7; padding-top:16px;
+          border-top:1px solid var(--rule-firm); }
+  .foot b { color:var(--ink-2); font-weight:600; }
+
+  #tip { position:fixed; z-index:50; pointer-events:none; opacity:0; transition:opacity .1s ease;
+         background:var(--ink); color:var(--surface); font-size:12px; line-height:1.45;
+         padding:7px 10px; border-radius:4px; white-space:nowrap; font-variant-numeric:tabular-nums; }
+  #tip.on { opacity:1; }
+  :focus-visible { outline:2px solid var(--s1); outline-offset:2px; border-radius:3px; }
+  @media (prefers-reduced-motion:reduce) { * { transition:none !important; } }
+
+  @media (max-width:860px) {
+    .tiles { grid-template-columns:repeat(2,1fr); }
+    .split { grid-template-columns:1fr; }
+    .steps { grid-template-columns:1fr; }
+    .hero .ret { font-size:42px; }
+    .lev .row { grid-template-columns:96px 1fr 96px; }
+    .hold .row { grid-template-columns:110px 1fr 62px; }
+  }
+  @media (max-width:520px) {
+    .wrap { padding:24px 14px 56px; }
+    .card, .hero { padding:18px 16px 20px; }
+    .masthead h1 { font-size:20px; }
+    .hero .aside { gap:20px; }
+  }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <h1>투자 스터디</h1>
+      <div class="sub" id="sub"></div>
+    </div>
+    <div class="shield">금액 비공개 · 비중(%) 기준</div>
+  </header>
+
+  <section class="hero" id="hero"></section>
+
+  <div class="tabbar">
+    <div class="tabs" id="tabs" role="tablist"></div>
+    <span class="navhint">← → 키로 전환</span>
+  </div>
+
+  <main id="view"></main>
+
+  <footer class="foot">
+    <b>산출 방식</b> — 비중 = 종목 평가금 ÷ 총 평가금(각자 계산, 금액은 제출하지 않음).
+    실효 비중 = 비중 × 레버리지 배수. 레버리지 배수는 일간 수익률 기준이라 보유가 길어질수록 실제 추종 배율은 이 값에서 벌어짐.<br>
+    <b>수익률</b> — 각 멤버의 첫 스냅샷이 지수 100.0. 스냅샷 A→B 구간은 A의 비중을 유지했다고 보고 구간 수익률을 chain-link함.
+    이전 매매 손익은 계산에 넣지 않음. 전부 원화 환산(일별 USD/KRW), 환차익 포함.<br>
+    <b>공개 범위</b> — 평가금·손익금·원금 등 금액은 일절 들어 있지 않음.<br>
+    <b>미확인 종목</b> — 379810 · 381170 · 458730 · 448300 · 353200 · 0193W0 · 0193T0 · ETHU 배수는 제출 정보만으로 확정하지 못해 잠정 분류함.
+    lever 스냅샷은 증권 앱 화면에서 환산했고 현금(예수금)을 0으로 가정함.
+  </footer>
+</div>
+
+<div id="tip" role="status"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   ① 데이터 — data/ 폴더에서 읽는다. 이 파일에는 데이터가 없다.
+      data/manifest.json          스냅샷·멤버 목록
+      data/instruments.json       종목 마스터(이름·테마·레버리지 배수)
+      data/members/<날짜>/<slug>.json   멤버 제출 원본
+   ══════════════════════════════════════════════════════════════ */
+let INSTRUMENTS = {}, ALIAS = {}, THEME_COLOR = {};
+let CLUB = { members: [] };
+let allDates = [], latestDate = "";
+
+const MEMBER_COLOR = ["var(--s1)","var(--s2)","var(--s3)","var(--s4)",
+                      "var(--s5)","var(--s6)","var(--s7)","var(--s8)"];
+
+
+/* ══════════════════════════════════════════════════════════════
+   ③ 계산
+   ══════════════════════════════════════════════════════════════ */
+const keyOf = t => { const k = String(t).trim(); return ALIAS[k] || k; };
+const inst = t => { const k = keyOf(t), i = INSTRUMENTS[k] || {};
+  return { t:k, name:i.n || k, theme:i.th || "기타", lev:i.lev === undefined ? 1 : i.lev, sub:i.sub, v:i.v }; };
+/* toFixed 는 부동소수점 때문에 10.85 → "10.8" 로 깎임. 반올림을 명시해 표·차트 합계를 맞춘다 */
+const rnd = (n, d) => { const p = 10 ** d; return Math.round(n * p + (n < 0 ? -1e-9 : 1e-9)) / p; };
+const f1 = n => rnd(n, 1).toFixed(1);
+const f2 = n => rnd(n, 2).toFixed(2);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+const signed = n => (n > 0 ? "+" : n < 0 ? "−" : "") + f1(Math.abs(n));
+
+/* 1자리 표시값 합이 정확히 100.0 이 되게 최대잉여법으로 배분 */
+function apportion(vals) {
+  const tot = 1000, raw = vals.map(v => v * 10), fl = raw.map(Math.floor);
+  let rem = tot - fl.reduce((a, b) => a + b, 0);
+  const ord = raw.map((v, i) => [v - fl[i], i]).sort((a, b) => b[0] - a[0]);
+  const out = fl.slice();
+  for (let k = 0; k < rem && ord.length; k++) out[ord[k % ord.length][1]] += 1;
+  return out.map(v => v / 10);
+}
+
+function analyse(snap) {
+  const rows = snap.holdings
+    .filter(h => h.w > 0)
+    .map(h => { const i = inst(h.t); return { ...h, ...i, eff: h.w * i.lev }; })
+    .sort((a, b) => b.w - a.w);
+
+  const nominal = rows.reduce((s, r) => s + r.w, 0);
+  const effective = rows.reduce((s, r) => s + r.eff, 0);
+
+  const byTheme = new Map();
+  rows.forEach(r => {
+    const e = byTheme.get(r.theme) || { theme:r.theme, w:0, eff:0 };
+    e.w += r.w; e.eff += r.eff; byTheme.set(r.theme, e);
+  });
+  const themes = [...byTheme.values()].sort((a, b) => b.w - a.w);
+  apportion(themes.map(t => t.w)).forEach((d, i) => themes[i].dw = d);   /* 표시용 */
+
+  /* 현금은 종목·테마 집계에서 뺀다 — 도넛(구성)에는 남기고 지표에서만 제외 */
+  const equity = rows.filter(r => r.theme !== "현금");
+  const themesEx = themes.filter(t => t.theme !== "현금");
+  const cash = rows.filter(r => r.theme === "현금").reduce((s, r) => s + r.w, 0);
+  const top3 = equity.slice(0, 3).reduce((s, r) => s + r.w, 0);
+
+  return { rows, equity, themes, themesEx, cash, nominal, effective, top3,
+           max: equity[0], topTheme: themesEx[0],
+           levCount: rows.filter(r => r.lev > 1).length };
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ④ 렌더
+   ══════════════════════════════════════════════════════════════ */
+let active = "__all__";
+
+function memberReturn(m) {
+  const s = m.snapshots;
+  return s.length ? s[s.length - 1].index - 100 : 0;
+}
+
+function renderTabs() {
+  const tabs = document.getElementById("tabs");
+  const items = [];
+  if (CLUB.members.length > 1) items.push({ id:"__all__", label:"전체 비교", color:null });
+  CLUB.members.forEach((m, i) => items.push({ id:m.id, label:m.id, color:MEMBER_COLOR[i % 8] }));
+  tabs.innerHTML = items.map(it => `
+    <button role="tab" data-id="${esc(it.id)}" aria-selected="${it.id === active}">
+      ${it.color ? `<span class="dot" style="background:${it.color}"></span>` : ""}${esc(it.label)}
+    </button>`).join("");
+  tabs.querySelectorAll("button").forEach(b =>
+    b.addEventListener("click", () => { active = b.dataset.id; activeScope = 0; render(); }));
+  window.__tabIds = items.map(i => i.id);
+}
+
+function renderHero() {
+  const el = document.getElementById("hero");
+  if (active === "__all__") {
+    const rets = CLUB.members.map(memberReturn);
+    const avg = rets.reduce((a, b) => a + b, 0) / rets.length;
+    const cls = avg > 0.05 ? "pos" : avg < -0.05 ? "neg" : "flat";
+    el.innerHTML = `
+      <div>
+        <div class="who">멤버 평균 누적 수익률</div>
+        <div class="ret ${cls}">${signed(avg)}%</div>
+        <div class="cap">${allDates.length < 2
+          ? "첫 스냅샷 — 전원 지수 100.0에서 출발"
+          : `최고 ${signed(Math.max(...rets))}% · 최저 ${signed(Math.min(...rets))}%`}</div>
+      </div>
+      <div class="aside">
+        <div><div class="k">멤버</div><div class="v">${CLUB.members.length}</div></div>
+        <div><div class="k">스냅샷</div><div class="v">${allDates.length}</div></div>
+      </div>`;
+    return;
+  }
+  const m = CLUB.members.find(x => x.id === active);
+  const last = m.snapshots[m.snapshots.length - 1];
+  const r = memberReturn(m);
+  const cls = r > 0.05 ? "pos" : r < -0.05 ? "neg" : "flat";
+  el.innerHTML = `
+    <div>
+      <div class="who">${esc(m.id)} · 누적 수익률</div>
+      <div class="ret ${cls}">${signed(r)}%</div>
+      <div class="cap">${m.snapshots.length < 2
+        ? `${last.date} 스냅샷이 출발점 — 다음 제출부터 수익률이 붙음`
+        : `${m.snapshots[0].date} 시작 · 스냅샷 ${m.snapshots.length}회`}</div>
+    </div>
+    <div class="aside">
+      <div><div class="k">누적 지수</div><div class="v">${f1(last.index)}</div></div>
+      <div><div class="k">기준일</div><div class="v">${last.date.slice(5)}</div></div>
+    </div>`;
+}
+
+/* 타임라인 — 컨테이너 실측 픽셀로 그려 왜곡 없음 */
+function drawTimeline(box) {
+  const W = box.clientWidth, H = 250;
+  if (!W) return;
+  const PL = 46, PR = 18, PT = 14, PB = 28;
+  const iw = W - PL - PR, ih = H - PT - PB;
+
+  const vals = CLUB.members.flatMap(m => m.snapshots.map(s => s.index));
+  let lo = Math.min(100, ...vals), hi = Math.max(100, ...vals);
+  if (hi - lo < 10) { const c = (hi + lo) / 2; lo = c - 5; hi = c + 5; }
+  else { const p = (hi - lo) * 0.15; lo -= p; hi += p; }
+
+  const n = allDates.length;
+  const X = i => n < 2 ? PL : PL + (iw * i) / (n - 1);
+  const Y = v => PT + ih - (ih * (v - lo)) / (hi - lo);
+
+  const ticks = (lo < 100 && hi > 100) ? [lo, 100, hi] : [lo, (lo + hi) / 2, hi];
+  let g = "";
+  ticks.forEach(t => {
+    const base = Math.abs(t - 100) < 1e-9;   /* 100 = 원금 기준선 */
+    g += `<line x1="${PL}" y1="${Y(t).toFixed(1)}" x2="${W - PR}" y2="${Y(t).toFixed(1)}"
+            stroke="${base ? "var(--rule-firm)" : "var(--grid)"}" stroke-width="1"
+            ${base ? 'stroke-dasharray="3 4"' : ""}></line>
+          <text x="${PL - 9}" y="${(Y(t) + 3.5).toFixed(1)}" text-anchor="end"
+            fill="var(--ink-3)" font-size="10.5" font-family="var(--mono)">${f1(t)}</text>`;
+  });
+
+  allDates.forEach((d, i) => {
+    g += `<text x="${X(i).toFixed(1)}" y="${H - 8}" text-anchor="${n < 2 ? "start" : i === 0 ? "start" : i === n - 1 ? "end" : "middle"}"
+            fill="var(--ink-3)" font-size="10.5" font-family="var(--mono)">${d.slice(2)}</text>`;
+  });
+
+  if (n < 2) {
+    g += `<line x1="${PL + 8}" y1="${Y(100).toFixed(1)}" x2="${W - PR}" y2="${Y(100).toFixed(1)}"
+            stroke="var(--ink-3)" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"></line>
+          <text x="${W - PR}" y="${(Y(100) - 14).toFixed(1)}" text-anchor="end"
+            fill="var(--ink-3)" font-size="10.5" font-family="var(--mono)">다음 스냅샷 대기</text>`;
+  }
+
+  CLUB.members.forEach((m, mi) => {
+    const c = MEMBER_COLOR[mi % 8];
+    const pts = m.snapshots.map(s => [X(allDates.indexOf(s.date)), Y(s.index)]);
+    if (pts.length > 1) {
+      g += `<polyline points="${pts.map(p => p.map(v => v.toFixed(1)).join(",")).join(" ")}"
+              fill="none" stroke="${c}" stroke-width="2"
+              stroke-linejoin="round" stroke-linecap="round"></polyline>`;
+    }
+    pts.forEach((p, si) => {
+      const s = m.snapshots[si];
+      g += `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="4.5" fill="${c}"
+              stroke="var(--surface)" stroke-width="2"
+              data-t="${esc(m.id)} · ${s.date}" data-v="지수 ${f1(s.index)} (${signed(s.index - 100)}%)"></circle>`;
+    });
+  });
+
+  box.innerHTML = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"
+    role="img" aria-label="멤버별 누적 지수 추이">${g}</svg>`;
+  bindTips(box);
+}
+
+function donutSVG(themes) {
+  const C = 2 * Math.PI * 70, GAP = 2;
+  let off = 0, s = "";
+  themes.forEach(t => {
+    const arc = (t.w / 100) * C;
+    const dash = Math.max(arc - GAP, 0.6);
+    s += `<circle cx="100" cy="100" r="70" stroke="${THEME_COLOR[t.theme] || "var(--s8)"}"
+            stroke-dasharray="${dash.toFixed(3)} ${(C - dash).toFixed(3)}"
+            stroke-dashoffset="${(-off).toFixed(3)}"
+            data-t="${esc(t.theme)}" data-v="${f1(t.w)}%"></circle>`;
+    off += arc;
+  });
+  return `<svg viewBox="0 0 200 200" role="img" aria-label="테마별 비중">
+    <g transform="rotate(-90 100 100)" fill="none" stroke-width="26">${s}</g></svg>`;
+}
+
+function renderMember(m) {
+  const last = m.snapshots[m.snapshots.length - 1];
+  const sets = [{ name:"통합", holdings:last.holdings }, ...(last.scopes || [])];
+  const si = Math.min(activeScope, sets.length - 1);
+  const a = analyse({ holdings: sets[si].holdings });
+  const scopeBar = sets.length > 1 ? `<div class="tabbar"><div class="tabs scopes" role="tablist">${
+    sets.map((x, i) => `<button role="tab" data-scope="${i}" aria-selected="${i === si}">${esc(x.name)}</button>`).join("")
+  }</div><span class="navhint">계좌별 보기</span></div>` : "";
+  const scaleT = Math.ceil(Math.max(...a.themesEx.map(t => t.eff), 10) / 10) * 10;
+  const scaleH = Math.max(...a.rows.map(r => r.w)) * 1.09;   /* 현금 포함 — 막대가 트랙을 넘지 않게 */
+
+  const levRows = a.themesEx.map(t => {
+    const c = THEME_COLOR[t.theme] || "var(--s8)";
+    const wPct = (t.w / scaleT) * 100, ePct = (t.eff / scaleT) * 100;
+    const hasExtra = t.eff - t.w > 0.05;
+    return `<div class="row">
+      <span class="lab"><b>${esc(t.theme)}</b></span>
+      <div class="track">
+        <div class="fill" style="width:${wPct.toFixed(2)}%;background:${c}"
+             data-t="${esc(t.theme)} 명목" data-v="${f1(t.dw)}%"></div>
+        ${hasExtra ? `<div class="extra" style="left:${(wPct + .5).toFixed(2)}%;width:${(ePct - wPct - .5).toFixed(2)}%;background:${c};color:${c}"
+             data-t="${esc(t.theme)} 레버리지 증분" data-v="+${f1(t.eff - t.w)}%p"></div>` : ""}
+      </div>
+      <span class="val">${hasExtra ? `<span class="arrow">${f1(t.dw)} →</span>` : `<span class="arrow">—</span>`}<span>${f1(t.eff)}%</span></span>
+    </div>`;
+  }).join("");
+
+  const holdRows = a.rows.map(r => `
+    <div class="row">
+      <span class="lab"><b>${esc(r.name)}</b><span class="tick">${esc(r.sub || r.t)}</span></span>
+      <div class="track"><div class="fill" style="width:${((r.w / scaleH) * 100).toFixed(2)}%;background:${THEME_COLOR[r.theme] || "var(--s8)"}"
+        data-t="${esc(r.name)} · ${esc(r.theme)}" data-v="${f2(r.w)}%"></div></div>
+      <span class="val">${f2(r.w)}%</span>
+    </div>`).join("");
+
+  const tableRows = a.rows.map(r => `
+    <tr><th scope="row"><span class="tname"><span class="swatch" style="background:${THEME_COLOR[r.theme] || "var(--s8)"}"></span>${esc(r.name)}</span></th>
+      <td class="l tk">${esc(r.t)}</td><td class="l">${esc(r.sub || r.theme)}</td>
+      <td>${f2(r.w)}%</td><td>${f2(r.eff)}%</td></tr>`).join("");
+
+  return `
+    ${scopeBar}
+    <section class="tiles">
+      <div class="tile"><div class="k">실효 익스포저</div><div class="v">${f1(a.effective)}<small>%</small></div>
+        <div class="d">${a.levCount ? `레버리지 ${a.levCount}종 반영 후` : "레버리지 없음"}</div></div>
+      <div class="tile"><div class="k">최대 테마</div><div class="v">${a.topTheme ? f1(a.topTheme.eff) : "—"}<small>${a.topTheme ? "%" : ""}</small></div>
+        <div class="d">${a.topTheme ? `${esc(a.topTheme.theme)} · 명목 ${f1(a.topTheme.w)}%` : "보유 종목 없음"}</div></div>
+      <div class="tile"><div class="k">최대 단일 종목</div><div class="v">${a.max ? f1(a.max.w) : "—"}<small>${a.max ? "%" : ""}</small></div>
+        <div class="d">${a.max ? `${esc(a.max.t)} · 상위 3종목 ${f1(a.top3)}%` : "—"}</div></div>
+      <div class="tile"><div class="k">현금 비중</div><div class="v">${f1(a.cash)}<small>%</small></div>
+        <div class="d">${a.equity.length}종목 · ${a.themesEx.length}개 테마</div></div>
+    </section>
+
+    <div class="split">
+      <section class="card">
+        <header><h2>테마 구성</h2><p class="note">명목 비중</p></header>
+        <div class="donut-body">
+          <div class="donut-figure">${donutSVG(a.themes)}
+            <div class="donut-center"><div class="n">${a.equity.length}</div><div class="l">종목</div></div>
+          </div>
+          <ul class="legend">${a.themes.map(t => `<li><span class="swatch" style="background:${THEME_COLOR[t.theme] || "var(--s8)"}"></span><span>${esc(t.theme)}</span><span class="pct">${f1(t.dw)}%</span></li>`).join("")}</ul>
+        </div>
+      </section>
+
+      <section class="card lev">
+        <header><h2>명목 비중이 감추는 것 — 실효 익스포저</h2>
+          <p class="note">${a.levCount
+            ? `레버리지 ${a.levCount}종의 배수를 풀면 실제 시장 노출은 원금의 ${f1(a.effective)}%. 명목 비중만 보면 이 포트폴리오를 잘못 읽게 됨.`
+            : "레버리지 상품이 없어 명목 비중과 실효 익스포저가 같음."}</p></header>
+        <div class="rows">${levRows}</div>
+        <div class="lev-key">
+          <span><i class="kbox"></i>명목 비중 — 실제 투입 자금</span>
+          <span><i class="kbox ghost"></i>레버리지 증분 — 배수로 늘어난 노출</span>
+        </div>
+      </section>
+    </div>
+
+    <section class="card hold">
+      <header><h2>종목별 비중</h2><p class="note">색은 테마, 길이는 명목 비중. ${a.equity.length}종목 전부 표시${a.cash > 0 ? " · 현금 포함" : ""}.</p></header>
+      <div class="rows">${holdRows}</div>
+    </section>
+
+    <section class="card">
+      <header><h2>이번 스냅샷의 관점</h2><p class="note">이 스터디의 본체. 숫자는 대화를 여는 도구일 뿐임.</p></header>
+      ${last.note
+        ? `<p class="quote">${esc(last.note)}</p>`
+        : `<div class="empty"><b>아직 작성되지 않음</b><br>왜 이렇게 담았는지 3줄이면 충분함. 제출 시 함께 넣으면 여기 붙음.</div>`}
+    </section>
+
+    <section class="card">
+      <header><h2>전체 보유 내역</h2><p class="note">위 차트와 동일한 데이터. 금액 항목은 포함하지 않음.</p></header>
+      <div class="tablewrap"><table>
+        <thead><tr><th scope="col">종목</th><th scope="col" class="l">티커</th>
+          <th scope="col" class="l">테마</th><th scope="col">비중</th><th scope="col">실효 비중</th></tr></thead>
+        <tbody>${tableRows}</tbody>
+        <tfoot><tr><th scope="row">합계</th><td></td><td></td>
+          <td>${f2(a.nominal)}%</td><td>${f2(a.effective)}%</td></tr></tfoot>
+      </table></div>
+    </section>`;
+}
+
+function renderOverview() {
+  const rows = CLUB.members.map((m, i) => {
+    const a = analyse(m.snapshots[m.snapshots.length - 1]);
+    const r = memberReturn(m);
+    return { m, a, r, c: MEMBER_COLOR[i % 8] };
+  }).sort((x, y) => y.r - x.r);
+
+  const counts = new Map();
+  CLUB.members.forEach(m => {
+    m.snapshots[m.snapshots.length - 1].holdings
+      .filter(h => h.w > 0 && inst(h.t).theme !== "현금")
+      .forEach(h => counts.set(h.t, (counts.get(h.t) || 0) + 1));
+  });
+  const shared = [...counts.entries()].filter(([, c]) => c > 1)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+
+  return `
+    <section class="card">
+      <header><h2>누적 수익률</h2>
+        <p class="note">전원 첫 스냅샷 지수 100.0에서 출발. ${allDates.length < 2
+          ? "두 번째 스냅샷이 들어오면 선이 그려짐."
+          : "구간 수익률을 chain-link한 누적 지수."}</p></header>
+      <div class="chart" id="chart"></div>
+      <div class="chart-legend">${rows.map(x =>
+        `<span><i style="background:${x.c}"></i>${esc(x.m.id)} <b>${signed(x.r)}%</b></span>`).join("")}</div>
+    </section>
+
+    <section class="card">
+      <header><h2>멤버 비교</h2><p class="note">최신 스냅샷 기준. 등수는 매기지 않음.</p></header>
+      <div class="tablewrap"><table>
+        <thead><tr><th scope="col">멤버</th><th scope="col">누적</th><th scope="col">지수</th>
+          <th scope="col">종목</th><th scope="col">현금</th><th scope="col">최대 테마</th>
+          <th scope="col">실효 익스포저</th><th scope="col">최대 단일</th></tr></thead>
+        <tbody>${rows.map(x => `<tr>
+          <th scope="row"><span class="tname"><span class="swatch" style="background:${x.c}"></span>${esc(x.m.id)}</span></th>
+          <td class="${x.r > .05 ? "pos" : x.r < -.05 ? "neg" : ""}">${signed(x.r)}%</td>
+          <td>${f1(x.m.snapshots[x.m.snapshots.length - 1].index)}</td>
+          <td>${x.a.equity.length}</td>
+          <td>${f1(x.a.cash)}%</td>
+          <td>${x.a.topTheme ? esc(x.a.topTheme.theme) + " " + f1(x.a.topTheme.w) + "%" : "—"}</td>
+          <td>${f1(x.a.effective)}%</td>
+          <td>${x.a.max ? esc(x.a.max.t) + " " + f1(x.a.max.w) + "%" : "—"}</td></tr>`).join("")}</tbody>
+      </table></div>
+    </section>
+
+    <section class="card">
+      <header><h2>겹치는 종목</h2><p class="note">두 명 이상이 담은 종목. 토론 시작점으로 쓰기 좋음.</p></header>
+      ${shared.length
+        ? `<div class="rows">${shared.map(([t, c]) => {
+            const i = inst(t);
+            /* 막대는 중립색 — 색은 멤버 식별에만 쓰고, 테마는 앞의 swatch가 알려줌 */
+            return `<div class="row" style="grid-template-columns:150px 1fr 52px">
+              <span class="lab" style="display:inline-flex;align-items:center;gap:8px">
+                <span class="swatch" style="background:${THEME_COLOR[i.theme] || "var(--s8)"}"></span>
+                <b>${esc(i.name)}</b> <span class="tick">${esc(t)}</span></span>
+              <div class="track"><div class="fill" style="width:${((c / CLUB.members.length) * 100).toFixed(1)}%;background:var(--ink-3)"
+                data-t="${esc(i.name)} · ${esc(i.theme)}" data-v="${c}명 보유"></div></div>
+              <span class="val">${c}명</span></div>`;
+          }).join("")}</div>`
+        : `<div class="empty"><b>아직 없음</b><br>멤버가 2명 이상 모이면 여기에 겹치는 종목이 뜸.</div>`}
+    </section>
+
+    <section class="card">
+      <header><h2>운영 규칙</h2></header>
+      <ol class="steps">
+        <li><b>비중이 바뀔 때마다 제출.</b> 월 1회 강제가 아님. 안 바꿨으면 안 내도 직전 비중이 이어짐.</li>
+        <li><b>구간별 buy-and-hold로 계산.</b> 스냅샷 A→B 구간은 A의 비중을 유지했다고 보고 chain-link.</li>
+        <li><b>소급 제출 금지.</b> 지나간 날짜로 비중을 바꿔 넣으면 트래킹이 무너짐. 최초 세팅만 예외.</li>
+      </ol>
+    </section>`;
+}
+
+function bindTips(root) {
+  root.querySelectorAll("[data-t]").forEach(el => {
+    el.addEventListener("pointerenter", e => showTip(el, e));
+    el.addEventListener("pointermove", moveTip);
+    el.addEventListener("pointerleave", hideTip);
+  });
+}
+const tipEl = document.getElementById("tip");
+let raf = null;
+function showTip(el, e) {
+  const t = el.getAttribute("data-t"), v = el.getAttribute("data-v");
+  tipEl.textContent = v ? t + "  " + v : t;
+  tipEl.classList.add("on"); moveTip(e);
+}
+function moveTip(e) {
+  if (raf) return;
+  raf = requestAnimationFrame(() => {
+    raf = null;
+    const r = tipEl.getBoundingClientRect();
+    let x = e.clientX + 14, y = e.clientY - r.height - 10;
+    if (x + r.width > innerWidth - 8) x = e.clientX - r.width - 14;
+    if (y < 8) y = e.clientY + 18;
+    tipEl.style.left = x + "px"; tipEl.style.top = y + "px";
+  });
+}
+function hideTip() { tipEl.classList.remove("on"); }
+addEventListener("scroll", hideTip, { passive:true });
+
+let ro = null;
+let activeScope = 0;
+function render() {
+  renderTabs();
+  renderHero();
+  const view = document.getElementById("view");
+  if (ro) { ro.disconnect(); ro = null; }
+  if (active === "__all__") {
+    view.innerHTML = renderOverview();
+    const box = document.getElementById("chart");
+    drawTimeline(box);
+    ro = new ResizeObserver(() => drawTimeline(box));
+    ro.observe(box);
+  } else {
+    view.innerHTML = renderMember(CLUB.members.find(m => m.id === active));
+  }
+  view.querySelectorAll("[data-scope]").forEach(b =>
+    b.addEventListener("click", () => { activeScope = +b.dataset.scope; render(); }));
+  bindTips(view);
+  scrollTo({ top:0, behavior:"instant" });
+}
+
+addEventListener("keydown", e => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+  const ids = window.__tabIds || [];
+  const i = ids.indexOf(active);
+  if (i < 0) return;
+  active = ids[(i + (e.key === "ArrowRight" ? 1 : ids.length - 1)) % ids.length];
+  activeScope = 0;
+  render();
+});
+
+/* ══════════════════════════════════════════════════════════════
+   ⑤ 부트 — 데이터를 읽어 CLUB 을 구성한 뒤 렌더
+   ══════════════════════════════════════════════════════════════ */
+const j = async u => {
+  const r = await fetch(u, { cache: "no-cache" });
+  if (!r.ok) throw new Error(`${u} → ${r.status}`);
+  return r.json();
+};
+const norm = hs => (hs || []).map(h => ({ t: h.ticker ?? h.t, w: +(h.weight ?? h.w) }));
+
+async function boot() {
+  const view = document.getElementById("view");
+  try {
+    const [man, mst] = await Promise.all([j("data/manifest.json"), j("data/instruments.json")]);
+    INSTRUMENTS = mst.instruments || {};
+    ALIAS = mst.alias || {};
+    THEME_COLOR = mst.themeColor || {};
+
+    const byId = new Map();
+    for (const snap of man.snapshots) {
+      const files = await Promise.all(snap.members.map(x =>
+        j(`data/members/${snap.date}/${x.file}`).catch(e => { console.warn(e); return null; })));
+      files.forEach((f, i) => {
+        if (!f) return;
+        const id = f.member || snap.members[i].id;
+        if (!byId.has(id)) byId.set(id, { id, snapshots: [] });
+        byId.get(id).snapshots.push({
+          date: f.date || snap.date,
+          index: typeof f.index === "number" ? f.index : 100,
+          note: f.note || "",
+          holdings: norm(f.holdings),
+          scopes: (f.scopes || []).map(x => ({ name: x.name, holdings: norm(x.holdings) }))
+        });
+      });
+    }
+    CLUB.members = [...byId.values()];
+    CLUB.members.forEach(m => m.snapshots.sort((a, b) => a.date.localeCompare(b.date)));
+    if (!CLUB.members.length) throw new Error("멤버 데이터가 비어 있음");
+
+    allDates = [...new Set(CLUB.members.flatMap(m => m.snapshots.map(s => s.date)))].sort();
+    latestDate = allDates[allDates.length - 1];
+    active = CLUB.members.length > 1 ? "__all__" : CLUB.members[0].id;
+
+    document.getElementById("sub").textContent =
+      `${latestDate} 기준 · 스냅샷 ${allDates.length}회차 · 멤버 ${CLUB.members.length}명 · 기준통화 ${man.baseCurrency || "KRW"}`;
+    render();
+  } catch (e) {
+    document.getElementById("hero").style.display = "none";
+    view.innerHTML = `<section class="card"><header><h2>데이터를 불러오지 못했습니다</h2>
+      <p class="note">${String(e.message || e)}</p></header>
+      <div class="empty"><b>로컬에서 파일을 직접 연 경우</b><br>
+      브라우저 보안 정책으로 data/ 폴더를 읽지 못합니다. 배포된 주소로 열거나
+      <code>python3 -m http.server</code> 로 띄운 뒤 접속하세요.</div></section>`;
+  }
+}
+
+boot();
+</script>
+
+</body>
+</html>

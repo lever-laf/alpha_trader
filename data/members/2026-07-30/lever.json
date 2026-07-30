@@ -1,0 +1,60 @@
+{
+  "member": "lever",
+  "date": "2026-07-30",
+  "index": 100,
+  "note": "",
+  "holdings": [
+    {
+      "ticker": "NVDA",
+      "weight": 33.96
+    },
+    {
+      "ticker": "MU",
+      "weight": 11.9
+    },
+    {
+      "ticker": "SNDK",
+      "weight": 10.52
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 9.58
+    },
+    {
+      "ticker": "TSLA",
+      "weight": 7.25
+    },
+    {
+      "ticker": "SOXL",
+      "weight": 6.02
+    },
+    {
+      "ticker": "IREN",
+      "weight": 3.79
+    },
+    {
+      "ticker": "TSLL",
+      "weight": 3.6
+    },
+    {
+      "ticker": "PLTR",
+      "weight": 3.5
+    },
+    {
+      "ticker": "SSO",
+      "weight": 3.49
+    },
+    {
+      "ticker": "CRCL",
+      "weight": 2.65
+    },
+    {
+      "ticker": "ILMN",
+      "weight": 2.21
+    },
+    {
+      "ticker": "TQQQ",
+      "weight": 1.53
+    }
+  ]
+}

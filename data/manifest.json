@@ -1,0 +1,35 @@
+{
+  "club": "투자 스터디",
+  "baseCurrency": "KRW",
+  "snapshots": [
+    {
+      "date": "2026-07-30",
+      "members": [
+        {
+          "id": "lever",
+          "file": "lever.json"
+        },
+        {
+          "id": "ren",
+          "file": "ren.json"
+        },
+        {
+          "id": "리",
+          "file": "ri.json"
+        },
+        {
+          "id": "바오",
+          "file": "bao.json"
+        },
+        {
+          "id": "Kirisi",
+          "file": "kirisi.json"
+        },
+        {
+          "id": "Marry",
+          "file": "marry.json"
+        }
+      ]
+    }
+  ]
+}

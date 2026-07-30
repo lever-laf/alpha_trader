@@ -1,0 +1,155 @@
+{
+  "member": "리",
+  "date": "2026-07-30",
+  "index": 100,
+  "note": "공격수(GOOGL·하이닉스·현대모비스)=수익 극대화 담당. 미드필더(JEPI·GLDI·USFR·TLTW·SCHD)=배당 현금흐름 확보, 폭락 방어 및 현금화 후 재매수 대기. 수비수(연금저축 S&P500·나스닥)·골키퍼(IRP)=안정적 장기 코어 자산.",
+  "holdings": [
+    {
+      "ticker": "458730.KS",
+      "weight": 13.73
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 11.84
+    },
+    {
+      "ticker": "USFR",
+      "weight": 9.66
+    },
+    {
+      "ticker": "JEPI",
+      "weight": 9.64
+    },
+    {
+      "ticker": "TLTW",
+      "weight": 9.01
+    },
+    {
+      "ticker": "000660.KS",
+      "weight": 8.12
+    },
+    {
+      "ticker": "GLDI",
+      "weight": 7.91
+    },
+    {
+      "ticker": "003230.KS",
+      "weight": 7.23
+    },
+    {
+      "ticker": "012330.KS",
+      "weight": 6.66
+    },
+    {
+      "ticker": "CASH",
+      "weight": 4.95
+    },
+    {
+      "ticker": "SCHD",
+      "weight": 4.07
+    },
+    {
+      "ticker": "133690.KS",
+      "weight": 3.6
+    },
+    {
+      "ticker": "360750.KS",
+      "weight": 3.47
+    },
+    {
+      "ticker": "005930.KS",
+      "weight": 0.08
+    },
+    {
+      "ticker": "BRK.B",
+      "weight": 0.03
+    }
+  ],
+  "scopes": [
+    {
+      "name": "직투",
+      "holdings": [
+        {
+          "ticker": "GOOGL",
+          "weight": 58.92
+        },
+        {
+          "ticker": "000660.KS",
+          "weight": 40.5
+        },
+        {
+          "ticker": "005930.KS",
+          "weight": 0.41
+        },
+        {
+          "ticker": "BRK.B",
+          "weight": 0.17
+        }
+      ]
+    },
+    {
+      "name": "ISA",
+      "holdings": [
+        {
+          "ticker": "003230.KS",
+          "weight": 52.07
+        },
+        {
+          "ticker": "012330.KS",
+          "weight": 47.93
+        }
+      ]
+    },
+    {
+      "name": "배당",
+      "holdings": [
+        {
+          "ticker": "USFR",
+          "weight": 23.98
+        },
+        {
+          "ticker": "JEPI",
+          "weight": 23.91
+        },
+        {
+          "ticker": "TLTW",
+          "weight": 22.37
+        },
+        {
+          "ticker": "GLDI",
+          "weight": 19.64
+        },
+        {
+          "ticker": "SCHD",
+          "weight": 10.1
+        }
+      ]
+    },
+    {
+      "name": "IRP",
+      "holdings": [
+        {
+          "ticker": "458730.KS",
+          "weight": 73.48
+        },
+        {
+          "ticker": "CASH",
+          "weight": 26.52
+        }
+      ]
+    },
+    {
+      "name": "연금저축",
+      "holdings": [
+        {
+          "ticker": "133690.KS",
+          "weight": 50.93
+        },
+        {
+          "ticker": "360750.KS",
+          "weight": 49.07
+        }
+      ]
+    }
+  ]
+}

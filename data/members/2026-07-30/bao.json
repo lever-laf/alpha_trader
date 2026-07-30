@@ -1,0 +1,88 @@
+{
+  "member": "바오",
+  "date": "2026-07-30",
+  "index": 100,
+  "note": "개별주 위주로 굴려왔는데 관리가 피곤해서 앞으로는 ETF 중심으로 넘어갈 계획. AI·AI인프라·테크/소프트웨어에 관심이 커서 해당 섹터 비중이 높은 편(그 외 종목도 일부 섞임). 연금저축은 별도로 S&P500·나스닥100 적립형 유지.",
+  "holdings": [
+    {
+      "ticker": "NVDA",
+      "weight": 15.21
+    },
+    {
+      "ticker": "AMD",
+      "weight": 10.91
+    },
+    {
+      "ticker": "KODEX 반도체타겟위클리커버드콜",
+      "weight": 9.85
+    },
+    {
+      "ticker": "NAVER",
+      "weight": 8.53
+    },
+    {
+      "ticker": "KODEX 미국S&P500",
+      "weight": 6.45
+    },
+    {
+      "ticker": "삼성전자",
+      "weight": 6.41
+    },
+    {
+      "ticker": "KODEX 미국나스닥100",
+      "weight": 5.9
+    },
+    {
+      "ticker": "TIGER 미국배당다우존스",
+      "weight": 5.66
+    },
+    {
+      "ticker": "AAPL",
+      "weight": 5.52
+    },
+    {
+      "ticker": "두산에너빌리티",
+      "weight": 4.86
+    },
+    {
+      "ticker": "RBLX",
+      "weight": 4.25
+    },
+    {
+      "ticker": "HOOD",
+      "weight": 3.88
+    },
+    {
+      "ticker": "OKLO",
+      "weight": 3.03
+    },
+    {
+      "ticker": "KODEX AI반도체TOP2플러스",
+      "weight": 2.99
+    },
+    {
+      "ticker": "ORCL",
+      "weight": 1.96
+    },
+    {
+      "ticker": "BABA",
+      "weight": 1.15
+    },
+    {
+      "ticker": "PLTR",
+      "weight": 1.15
+    },
+    {
+      "ticker": "TSLL",
+      "weight": 0.97
+    },
+    {
+      "ticker": "CASH",
+      "weight": 0.9
+    },
+    {
+      "ticker": "ETHU",
+      "weight": 0.42
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "member": "ren",
+  "date": "2026-07-30",
+  "index": 100,
+  "note": "나스닥 약세라 나스닥100 비중을 축소해 현금으로 일부 이동. 삼성전자·하이닉스 단일레버리지는 하락해서 현재 5%씩 수준. 비트코인 5% 보유.",
+  "holdings": [
+    {
+      "ticker": "379810.KS",
+      "weight": 20
+    },
+    {
+      "ticker": "0193W0.KS",
+      "weight": 5
+    },
+    {
+      "ticker": "0193T0.KS",
+      "weight": 5
+    },
+    {
+      "ticker": "BTC-USD",
+      "weight": 5
+    },
+    {
+      "ticker": "CASH",
+      "weight": 65
+    }
+  ]
+}

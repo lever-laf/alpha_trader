@@ -1,0 +1,56 @@
+{
+  "member": "Kirisi",
+  "date": "2026-07-30",
+  "index": 100,
+  "note": "배당/성장을 같이 가져가며 안정적인 배당 흐름으로 성장주 하락 리스크 분산. 배당 주식이 꽤 모여 인공지능/광섬유 비중 확대 중.",
+  "holdings": [
+    {
+      "ticker": "O",
+      "weight": 22.8
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 17.09
+    },
+    {
+      "ticker": "005380.KS",
+      "weight": 12.79
+    },
+    {
+      "ticker": "PFE",
+      "weight": 12.37
+    },
+    {
+      "ticker": "MO",
+      "weight": 10.27
+    },
+    {
+      "ticker": "GLDM",
+      "weight": 7.74
+    },
+    {
+      "ticker": "NKE",
+      "weight": 6.13
+    },
+    {
+      "ticker": "POET",
+      "weight": 5.33
+    },
+    {
+      "ticker": "UPS",
+      "weight": 3.54
+    },
+    {
+      "ticker": "CASH",
+      "weight": 1.07
+    },
+    {
+      "ticker": "T",
+      "weight": 0.51
+    },
+    {
+      "ticker": "PEP",
+      "weight": 0.36
+    }
+  ]
+}

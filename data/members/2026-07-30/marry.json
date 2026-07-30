@@ -1,0 +1,237 @@
+{
+  "member": "Marry",
+  "date": "2026-07-30",
+  "index": 100,
+  "note": "반도체·미국 성장 자산을 중심으로 지수·배당·방어 ETF를 함께 보유함.\n연금저축은 TDF로 장기 운용하고 MMF는 하락 대응 대기자금으로 분리함.\n현금 비중을 유지해 시장 조정 시 분할매수 여력을 확보함.",
+  "holdings": [
+    {
+      "ticker": "CASH",
+      "weight": 36.2
+    },
+    {
+      "ticker": "TSM",
+      "weight": 9.54
+    },
+    {
+      "ticker": "SPYM",
+      "weight": 6.45
+    },
+    {
+      "ticker": "381170.KS",
+      "weight": 5.33
+    },
+    {
+      "ticker": "000660.KS",
+      "weight": 4.96
+    },
+    {
+      "ticker": "XLP",
+      "weight": 4.33
+    },
+    {
+      "ticker": "005930.KS",
+      "weight": 4.25
+    },
+    {
+      "ticker": "XLV",
+      "weight": 4.12
+    },
+    {
+      "ticker": "SMH",
+      "weight": 3.85
+    },
+    {
+      "ticker": "SCHD",
+      "weight": 3.53
+    },
+    {
+      "ticker": "ABCL",
+      "weight": 3.38
+    },
+    {
+      "ticker": "AAPL",
+      "weight": 2.49
+    },
+    {
+      "ticker": "ARKF",
+      "weight": 1.99
+    },
+    {
+      "ticker": "SPY",
+      "weight": 1.72
+    },
+    {
+      "ticker": "TSLA",
+      "weight": 1.14
+    },
+    {
+      "ticker": "434060.KS",
+      "weight": 1.08
+    },
+    {
+      "ticker": "448300.KS",
+      "weight": 1.03
+    },
+    {
+      "ticker": "NVDA",
+      "weight": 0.96
+    },
+    {
+      "ticker": "QQQI",
+      "weight": 0.9
+    },
+    {
+      "ticker": "JEPQ",
+      "weight": 0.85
+    },
+    {
+      "ticker": "KO",
+      "weight": 0.8
+    },
+    {
+      "ticker": "PLTR",
+      "weight": 0.61
+    },
+    {
+      "ticker": "353200.KS",
+      "weight": 0.28
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 0.19
+    },
+    {
+      "ticker": "001740.KS",
+      "weight": 0.01
+    },
+    {
+      "ticker": "TQQQ",
+      "weight": 0.01
+    }
+  ],
+  "scopes": [
+    {
+      "name": "직투",
+      "holdings": [
+        {
+          "ticker": "CASH",
+          "weight": 23.11
+        },
+        {
+          "ticker": "TSM",
+          "weight": 11.7
+        },
+        {
+          "ticker": "SPYM",
+          "weight": 7.9
+        },
+        {
+          "ticker": "381170.KS",
+          "weight": 6.54
+        },
+        {
+          "ticker": "000660.KS",
+          "weight": 6.08
+        },
+        {
+          "ticker": "XLP",
+          "weight": 5.31
+        },
+        {
+          "ticker": "005930.KS",
+          "weight": 5.21
+        },
+        {
+          "ticker": "XLV",
+          "weight": 5.05
+        },
+        {
+          "ticker": "SMH",
+          "weight": 4.72
+        },
+        {
+          "ticker": "SCHD",
+          "weight": 4.32
+        },
+        {
+          "ticker": "ABCL",
+          "weight": 4.14
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 3.05
+        },
+        {
+          "ticker": "ARKF",
+          "weight": 2.44
+        },
+        {
+          "ticker": "SPY",
+          "weight": 2.11
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 1.4
+        },
+        {
+          "ticker": "448300.KS",
+          "weight": 1.27
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 1.18
+        },
+        {
+          "ticker": "QQQI",
+          "weight": 1.1
+        },
+        {
+          "ticker": "JEPQ",
+          "weight": 1.04
+        },
+        {
+          "ticker": "KO",
+          "weight": 0.98
+        },
+        {
+          "ticker": "PLTR",
+          "weight": 0.75
+        },
+        {
+          "ticker": "353200.KS",
+          "weight": 0.34
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.24
+        },
+        {
+          "ticker": "001740.KS",
+          "weight": 0.01
+        },
+        {
+          "ticker": "TQQQ",
+          "weight": 0.01
+        }
+      ]
+    },
+    {
+      "name": "연금저축",
+      "holdings": [
+        {
+          "ticker": "434060.KS",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "name": "MMF",
+      "holdings": [
+        {
+          "ticker": "CASH",
+          "weight": 100
+        }
+      ]
+    }
+  ]
+}
