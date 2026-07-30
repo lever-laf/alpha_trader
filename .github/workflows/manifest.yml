@@ -27,8 +27,11 @@ jobs:
         continue-on-error: true
         run: python3 tools/validate.py
 
+      # 검증에 걸린 제출이 있어도 돌린다. 계산기는 문제가 있는 멤버만 보류하므로
+      # 한 사람의 오류로 나머지 멤버의 수익률까지 멈추지 않게 한다.
       - name: 수익률 재계산
-        if: steps.validate.outcome == 'success'
+        if: always()
+        continue-on-error: true
         run: python3 tools/prices.py | tee -a .summary.md
 
       - name: 요약
