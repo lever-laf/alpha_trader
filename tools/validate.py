@@ -46,6 +46,26 @@ def yahoo_name(ticker: str):
     return None      # 계속 실패하면 보수적으로 반려한다
 
 
+def naver_codes(name: str):
+    """한글 종목명을 네이버 자동완성으로 조회해 코드 후보를 돌려준다.
+    자동 교체는 하지 않는다 — (H)·커버드콜 등 비슷한 이름이 많아 오선택 위험이 있다."""
+    try:
+        u = "https://ac.stock.naver.com/ac?" + urllib.parse.urlencode(
+            {"q": name, "target": "stock,index"})
+        req = urllib.request.Request(u, headers={**UA, "Referer": "https://finance.naver.com/"})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            items = json.load(r).get("items", [])
+        out = []
+        for it in items[:3]:
+            for x in (it if isinstance(it, list) else [it]):
+                c, n = x.get("code"), x.get("name")
+                if c and n:
+                    out.append(f"{c}.KS ({n})")
+        return out
+    except Exception:
+        return []
+
+
 def main() -> int:
     master = json.loads((DATA / "instruments.json").read_text(encoding="utf-8"))
     INSTR, ALIAS = master["instruments"], master.get("alias", {})
@@ -104,10 +124,15 @@ def main() -> int:
                     time.sleep(0.2)
                 name = checked[t]
                 if name is None:
+                    hint = ""
+                    if any("\uac00" <= c <= "\ud7a3" for c in raw):
+                        cands = naver_codes(raw)
+                        hint = (" 이 이름으로 검색된 코드: " + " / ".join(cands) +
+                                " — 맞는 것을 골라 티커 자리에 넣을 것") if cands else ""
                     errors.append(
                         f"{rel} — 티커 '{raw}' 를 Yahoo Finance 에서 찾을 수 없음. "
-                        f"오타이거나 표기가 다름 (예: BRK.B→BRK-B, 국내는 005930.KS). "
-                        f"https://finance.yahoo.com 에서 조회되는 심볼로 적을 것")
+                        f"오타이거나 한글 이름을 적었을 수 있음 (예: BRK.B→BRK-B, 국내는 005930.KS)."
+                        + (hint or " https://finance.yahoo.com 에서 조회되는 심볼로 적을 것"))
                     ok = False
                 else:
                     notes.append(f"신규 종목 {t} — {name}")

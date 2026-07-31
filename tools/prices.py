@@ -116,8 +116,14 @@ def main() -> int:
         print("시세 조회 실패: " + ", ".join(missing))
 
     # ── 원화 일별 시계열 ──
+    # 장이 열려 있는 당일은 종가가 아니라 장중 가격이 온다. 조회 시각마다 값이 달라지므로
+    # 한·미 양쪽 장이 모두 마감된 날짜까지만 쓴다.
+    # (KST 08:00 기준으로 전일은 한국 15:30 마감·미국 전일 종가 확정이 모두 끝난 상태)
+    kst = datetime.now(timezone(timedelta(hours=9)))
+    cutoff = (kst - timedelta(days=1 if kst.hour >= 6 else 2)).date().isoformat()
+
     days = sorted({d for r in series.values() for d in r["px"]} | set(fx["px"]))
-    days = [d for d in days if d >= first]
+    days = [d for d in days if first <= d <= cutoff]
     if not days:
         print("가격 데이터 없음"); return 1
     fxk = ffill(fx["px"], days)
@@ -160,6 +166,7 @@ def main() -> int:
 
     results = {
         "asOf": days[-1],
+        "cutoff": cutoff,
         "generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "basis": "세전 총수익(배당 재투자 반영) · 원화 환산",
         "members": out,
@@ -173,7 +180,7 @@ def main() -> int:
         (DATA / "instruments.json").write_text(
             json.dumps(master, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-    print(f"기준일 {days[-1]} · 종목 {len(series)} · 멤버 {len(out)}")
+    print(f"기준일 {days[-1]} (미체결 세션 제외) · 종목 {len(series)} · 멤버 {len(out)}")
     for mid, v in sorted(out.items(), key=lambda x: -x[1]["index"]):
         print(f"  {mid:<8} {v['index']:8.2f}  ({v['index'] - 100:+.2f}%)  {len(v['series'])}일")
     for mid, bad in held.items():
