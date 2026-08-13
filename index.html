@@ -380,11 +380,14 @@ function renderHero() {
   const m = CLUB.members.find(x => x.id === active);
   const last = m.snapshots[m.snapshots.length - 1];
   const held = heldOf(m);
+  /* "기준일"은 가격이 실제로 반영된 날(asOf) — 멤버가 마지막으로 비중을 바꾼 날(last.date)이 아니다.
+     두 날짜가 다르면(비중을 바꾼 뒤에도 가격은 최신까지 계속 굴러감) 착각을 부른다. */
+  const asOfDate = (RESULTS && RESULTS.asOf) || last.date;
   if (held) {
     el.innerHTML = `<div><div class="who">${esc(m.id)} · 누적 수익률</div>
       <div class="ret flat" style="font-size:34px">계산 보류</div>
       <div class="cap">시세를 받지 못한 종목이 있어 수익률을 내지 않음 — ${esc(held.join(", "))}</div></div>
-      <div class="aside"><div><div class="k">기준일</div><div class="v">${last.date.slice(5)}</div></div></div>`;
+      <div class="aside"><div><div class="k">기준일</div><div class="v">${asOfDate.slice(5)}</div></div></div>`;
     return;
   }
   const r = memberReturn(m);
@@ -399,7 +402,7 @@ function renderHero() {
     </div>
     <div class="aside">
       <div><div class="k">누적 지수</div><div class="v">${f1(idxOf(m))}</div></div>
-      <div><div class="k">기준일</div><div class="v">${last.date.slice(5)}</div></div>
+      <div><div class="k">기준일</div><div class="v">${asOfDate.slice(5)}</div></div>
     </div>`;
 }
 
