@@ -39,6 +39,15 @@
           "file": "ren.json"
         }
       ]
+    },
+    {
+      "date": "2026-08-13",
+      "members": [
+        {
+          "id": "Kirisi",
+          "file": "kirisi.json"
+        }
+      ]
     }
   ]
 }

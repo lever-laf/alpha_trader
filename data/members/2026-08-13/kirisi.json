@@ -1,0 +1,60 @@
+{
+  "member": "Kirisi",
+  "date": "2026-08-13",
+  "index": 103.4765,
+  "note": "배당/성장을 같이 가져가며 안정적인 배당 흐름으로 성장주 하락 리스크 분산. 배당 주식이 꽤 모여 인공지능/광섬유 비중 확대 중. 이번에 테슬라 5.2% 신규 편입해 전기차/자율주행 성장 노출 추가, 기존 종목은 비례 축소.",
+  "holdings": [
+    {
+      "ticker": "O",
+      "weight": 21.61
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 16.2
+    },
+    {
+      "ticker": "005380.KS",
+      "weight": 12.13
+    },
+    {
+      "ticker": "PFE",
+      "weight": 11.73
+    },
+    {
+      "ticker": "MO",
+      "weight": 9.74
+    },
+    {
+      "ticker": "GLDM",
+      "weight": 7.34
+    },
+    {
+      "ticker": "NKE",
+      "weight": 5.81
+    },
+    {
+      "ticker": "TSLA",
+      "weight": 5.2
+    },
+    {
+      "ticker": "POET",
+      "weight": 5.05
+    },
+    {
+      "ticker": "UPS",
+      "weight": 3.36
+    },
+    {
+      "ticker": "CASH",
+      "weight": 1.01
+    },
+    {
+      "ticker": "T",
+      "weight": 0.48
+    },
+    {
+      "ticker": "PEP",
+      "weight": 0.34
+    }
+  ]
+}
