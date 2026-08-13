@@ -50,11 +50,24 @@
       ]
     },
     {
+      "date": "2026-08-11",
+      "members": [
+        {
+          "id": "리",
+          "file": "lee.json"
+        }
+      ]
+    },
+    {
       "date": "2026-08-13",
       "members": [
         {
           "id": "Kirisi",
           "file": "kirisi.json"
+        },
+        {
+          "id": "리",
+          "file": "lee.json"
         }
       ]
     }

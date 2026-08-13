@@ -1,0 +1,123 @@
+{
+  "member": "리",
+  "date": "2026-08-13",
+  "index": 100.0,
+  "note": "GOOGL 익절 전량 매도. 토스증권으로 이관하려 현금으로 보유 중.",
+  "holdings": [
+    {
+      "ticker": "CASH",
+      "weight": 53.01
+    },
+    {
+      "ticker": "458730.KS",
+      "weight": 13.73
+    },
+    {
+      "ticker": "000660.KS",
+      "weight": 8.12
+    },
+    {
+      "ticker": "003230.KS",
+      "weight": 7.23
+    },
+    {
+      "ticker": "012330.KS",
+      "weight": 6.66
+    },
+    {
+      "ticker": "SCHD",
+      "weight": 4.07
+    },
+    {
+      "ticker": "133690.KS",
+      "weight": 3.6
+    },
+    {
+      "ticker": "360750.KS",
+      "weight": 3.47
+    },
+    {
+      "ticker": "005930.KS",
+      "weight": 0.08
+    },
+    {
+      "ticker": "BRK.B",
+      "weight": 0.03
+    }
+  ],
+  "scopes": [
+    {
+      "name": "직투",
+      "holdings": [
+        {
+          "ticker": "CASH",
+          "weight": 58.92
+        },
+        {
+          "ticker": "000660.KS",
+          "weight": 40.5
+        },
+        {
+          "ticker": "005930.KS",
+          "weight": 0.41
+        },
+        {
+          "ticker": "BRK.B",
+          "weight": 0.17
+        }
+      ]
+    },
+    {
+      "name": "ISA",
+      "holdings": [
+        {
+          "ticker": "003230.KS",
+          "weight": 52.07
+        },
+        {
+          "ticker": "012330.KS",
+          "weight": 47.93
+        }
+      ]
+    },
+    {
+      "name": "배당",
+      "holdings": [
+        {
+          "ticker": "CASH",
+          "weight": 89.9
+        },
+        {
+          "ticker": "SCHD",
+          "weight": 10.1
+        }
+      ]
+    },
+    {
+      "name": "IRP",
+      "holdings": [
+        {
+          "ticker": "458730.KS",
+          "weight": 73.48
+        },
+        {
+          "ticker": "CASH",
+          "weight": 26.52
+        }
+      ]
+    },
+    {
+      "name": "연금저축",
+      "holdings": [
+        {
+          "ticker": "133690.KS",
+          "weight": 50.93
+        },
+        {
+          "ticker": "360750.KS",
+          "weight": 49.07
+        }
+      ]
+    }
+  ]
+}
