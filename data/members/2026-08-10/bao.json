@@ -1,0 +1,88 @@
+{
+  "member": "바오",
+  "date": "2026-08-10",
+  "index": 100.0,
+  "note": "PLTR 전량 매도, 그 대금 전액으로 GOOGL 신규 편입 후 추가 입금해 더 담음. 국내 예수금은 KODEX 반도체타겟위클리커버드콜 추가매수에 전액 소진해 현금 0. 개별주 줄이고 ETF·빅테크로 좁혀가는 기조 유지.",
+  "holdings": [
+    {
+      "ticker": "NVDA",
+      "weight": 15.51
+    },
+    {
+      "ticker": "0190G0.KS",
+      "weight": 11.56
+    },
+    {
+      "ticker": "AMD",
+      "weight": 9.64
+    },
+    {
+      "ticker": "035420.KS",
+      "weight": 8.49
+    },
+    {
+      "ticker": "005930.KS",
+      "weight": 6.52
+    },
+    {
+      "ticker": "379800.KS",
+      "weight": 6.17
+    },
+    {
+      "ticker": "034020.KS",
+      "weight": 5.91
+    },
+    {
+      "ticker": "379810.KS",
+      "weight": 5.81
+    },
+    {
+      "ticker": "458730.KS",
+      "weight": 5.12
+    },
+    {
+      "ticker": "AAPL",
+      "weight": 4.66
+    },
+    {
+      "ticker": "HOOD",
+      "weight": 3.87
+    },
+    {
+      "ticker": "395160.KS",
+      "weight": 3.25
+    },
+    {
+      "ticker": "OKLO",
+      "weight": 3.0
+    },
+    {
+      "ticker": "RBLX",
+      "weight": 2.96
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 2.84
+    },
+    {
+      "ticker": "ORCL",
+      "weight": 2.12
+    },
+    {
+      "ticker": "BABA",
+      "weight": 1.2
+    },
+    {
+      "ticker": "TSLL",
+      "weight": 1.01
+    },
+    {
+      "ticker": "ETHU",
+      "weight": 0.36
+    },
+    {
+      "ticker": "CASH",
+      "weight": 0.0
+    }
+  ]
+}
