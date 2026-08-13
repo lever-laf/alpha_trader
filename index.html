@@ -294,6 +294,7 @@ const f1 = n => rnd(n, 1).toFixed(1);
 const f2 = n => rnd(n, 2).toFixed(2);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 const signed = n => (n > 0 ? "+" : n < 0 ? "−" : "") + f1(Math.abs(n));
+const signed2 = n => (n > 0 ? "+" : n < 0 ? "−" : "") + f2(Math.abs(n));
 
 /* 1자리 표시값 합이 정확히 100.0 이 되게 최대잉여법으로 배분 */
 function apportion(vals) {
@@ -518,10 +519,19 @@ function renderMember(m) {
       <span class="val">${f2(r.w)}%</span>
     </div>`).join("");
 
-  const tableRows = a.rows.map(r => `
+  const hr = m.holdRet && m.holdRet.holdings;
+  let contribTotal = 0, contribKnown = false;
+  const tableRows = a.rows.map(r => {
+    const ret = hr && hr[r.t] && typeof hr[r.t].ret === "number" ? hr[r.t].ret : null;
+    const contrib = ret === null ? null : (r.w / 100) * ret;
+    if (contrib !== null) { contribTotal += contrib; contribKnown = true; }
+    return `
     <tr><th scope="row"><span class="tname"><span class="swatch" style="background:${THEME_COLOR[r.theme] || "var(--s8)"}"></span>${esc(r.name)}</span></th>
       <td class="l tk">${esc(r.t)}</td><td class="l">${esc(r.sub || r.theme)}</td>
-      <td>${f2(r.w)}%</td><td>${f2(r.eff)}%</td></tr>`).join("");
+      <td>${f2(r.w)}%</td><td>${f2(r.eff)}%</td>
+      <td class="${ret > 0.05 ? "pos" : ret < -0.05 ? "neg" : ""}">${ret === null ? "—" : signed(ret) + "%"}</td>
+      <td class="${contrib > 0.005 ? "pos" : contrib < -0.005 ? "neg" : ""}">${contrib === null ? "—" : signed2(contrib) + "%p"}</td></tr>`;
+  }).join("");
 
   return `
     ${scopeBar}
@@ -573,13 +583,17 @@ function renderMember(m) {
     </section>
 
     <section class="card">
-      <header><h2>전체 보유 내역</h2><p class="note">위 차트와 동일한 데이터. 금액 항목은 포함하지 않음.</p></header>
+      <header><h2>전체 보유 내역</h2><p class="note">위 차트와 동일한 데이터. 금액 항목은 포함하지 않음.
+        ${hr ? `종목 수익률은 <b>${esc(m.holdRet.from)} → ${esc(m.holdRet.to)}</b> 구간 가격 변동(배당 재투자 반영, 원화 환산) 기준 — 비중이 바뀌기 전 구간만 계산함.`
+             : "종목별 수익률은 다음 시세 갱신 이후 표시됨."}</p></header>
       <div class="tablewrap"><table>
         <thead><tr><th scope="col">종목</th><th scope="col" class="l">티커</th>
-          <th scope="col" class="l">테마</th><th scope="col">비중</th><th scope="col">실효 비중</th></tr></thead>
+          <th scope="col" class="l">테마</th><th scope="col">비중</th><th scope="col">실효 비중</th>
+          <th scope="col">수익률</th><th scope="col">기여도</th></tr></thead>
         <tbody>${tableRows}</tbody>
         <tfoot><tr><th scope="row">합계</th><td></td><td></td>
-          <td>${f2(a.nominal)}%</td><td>${f2(a.effective)}%</td></tr></tfoot>
+          <td>${f2(a.nominal)}%</td><td>${f2(a.effective)}%</td><td></td>
+          <td>${contribKnown ? signed2(contribTotal) + "%p" : "—"}</td></tr></tfoot>
       </table></div>
     </section>`;
 }
@@ -764,6 +778,8 @@ async function boot() {
     CLUB.members.forEach(m => {
       const r = RESULTS && RESULTS.members && RESULTS.members[m.id];
       if (r) { m.index = r.index; m.series = r.series; }
+      const hr = RESULTS && RESULTS.holdingsReturns && RESULTS.holdingsReturns[m.id];
+      if (hr) { m.holdRet = hr; }
     });
 
     allDates = [...new Set(CLUB.members.flatMap(m => m.snapshots.map(s => s.date)))].sort();

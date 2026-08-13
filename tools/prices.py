@@ -134,7 +134,7 @@ def main() -> int:
                   if r["ccy"] != "KRW" else p)
 
     # ── 멤버별 chain-link ──
-    out, held = {}, {}
+    out, held, holdingsReturns = {}, {}, {}
     for mid, snaps in members.items():
         bad = sorted({t for s in snaps for t in s["w"] if t in missing})
         if bad:
@@ -159,6 +159,22 @@ def main() -> int:
                     r += (w / 100.0) * (p1 / p0 - 1.0)
                 pts.append([d, round(idx * (1 + r), 4)])
             idx = pts[-1][1]                     # 다음 구간의 출발점
+
+            # 현재(마지막) 구간의 종목별 수익률 — 대시보드 "종목별 수익률" 표시용.
+            # 비중이 바뀌기 전이므로 이 구간에서만 유효하고, 전 구간과는 이어붙이지 않는다.
+            if i == len(snaps) - 1 and span:
+                d_last = span[-1]
+                hr = {}
+                for t, w in s["w"].items():
+                    if t == "CASH":
+                        hr[t] = {"ret": 0.0}
+                        continue
+                    p0, p1 = krw.get(t, {}).get(base), krw.get(t, {}).get(d_last)
+                    if not p0 or not p1:
+                        continue
+                    ret = p1 / p0 - 1.0
+                    hr[t] = {"ret": round(ret * 100, 4), "contrib": round(w / 100.0 * ret * 100, 4)}
+                holdingsReturns[mid] = {"from": base, "to": d_last, "holdings": hr}
         # 같은 날짜 중복(구간 경계) 정리 — 뒤엣것을 남긴다
         dedup = {d: v for d, v in pts}
         ser = [[d, v] for d, v in sorted(dedup.items())]
@@ -170,6 +186,7 @@ def main() -> int:
         "generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "basis": "세전 총수익(배당 재투자 반영) · 원화 환산",
         "members": out,
+        "holdingsReturns": holdingsReturns,
         "newInstruments": newly,
         "onHold": held,
         "warnings": warnings,
