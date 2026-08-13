@@ -30,6 +30,15 @@
           "file": "ri.json"
         }
       ]
+    },
+    {
+      "date": "2026-08-03",
+      "members": [
+        {
+          "id": "ren",
+          "file": "ren.json"
+        }
+      ]
     }
   ]
 }
