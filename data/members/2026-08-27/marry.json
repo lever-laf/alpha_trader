@@ -1,0 +1,237 @@
+{
+  "member": "Marry",
+  "date": "2026-08-27",
+  "index": 100.0,
+  "note": "7/30 대비 SCHD와 TIGER 미국나스닥100TR(H) 비중을 소폭 늘림. 나머지 종목은 그대로 보유함.\n현금은 MMF 대기자금과 증권 예수금으로 나눠 유지함.",
+  "holdings": [
+    {
+      "ticker": "CASH",
+      "weight": 31.87
+    },
+    {
+      "ticker": "TSM",
+      "weight": 9.45
+    },
+    {
+      "ticker": "ABCL",
+      "weight": 6.79
+    },
+    {
+      "ticker": "SPYM",
+      "weight": 6.06
+    },
+    {
+      "ticker": "000660.KS",
+      "weight": 5.62
+    },
+    {
+      "ticker": "381170.KS",
+      "weight": 5.06
+    },
+    {
+      "ticker": "SCHD",
+      "weight": 4.92
+    },
+    {
+      "ticker": "005930.KS",
+      "weight": 4.74
+    },
+    {
+      "ticker": "XLV",
+      "weight": 3.88
+    },
+    {
+      "ticker": "XLP",
+      "weight": 3.83
+    },
+    {
+      "ticker": "SMH",
+      "weight": 3.81
+    },
+    {
+      "ticker": "ARKF",
+      "weight": 2.06
+    },
+    {
+      "ticker": "AAPL",
+      "weight": 2.05
+    },
+    {
+      "ticker": "SPY",
+      "weight": 1.62
+    },
+    {
+      "ticker": "448300.KS",
+      "weight": 1.33
+    },
+    {
+      "ticker": "TSLA",
+      "weight": 1.18
+    },
+    {
+      "ticker": "434060.KS",
+      "weight": 1.03
+    },
+    {
+      "ticker": "NVDA",
+      "weight": 0.99
+    },
+    {
+      "ticker": "QQQI",
+      "weight": 0.85
+    },
+    {
+      "ticker": "JEPQ",
+      "weight": 0.8
+    },
+    {
+      "ticker": "PLTR",
+      "weight": 0.79
+    },
+    {
+      "ticker": "KO",
+      "weight": 0.72
+    },
+    {
+      "ticker": "353200.KS",
+      "weight": 0.35
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 0.18
+    },
+    {
+      "ticker": "TQQQ",
+      "weight": 0.01
+    },
+    {
+      "ticker": "001740.KS",
+      "weight": 0.01
+    }
+  ],
+  "scopes": [
+    {
+      "name": "직투",
+      "holdings": [
+        {
+          "ticker": "CASH",
+          "weight": 18.88
+        },
+        {
+          "ticker": "TSM",
+          "weight": 11.42
+        },
+        {
+          "ticker": "ABCL",
+          "weight": 8.21
+        },
+        {
+          "ticker": "SPYM",
+          "weight": 7.32
+        },
+        {
+          "ticker": "000660.KS",
+          "weight": 6.79
+        },
+        {
+          "ticker": "381170.KS",
+          "weight": 6.12
+        },
+        {
+          "ticker": "SCHD",
+          "weight": 5.95
+        },
+        {
+          "ticker": "005930.KS",
+          "weight": 5.73
+        },
+        {
+          "ticker": "XLV",
+          "weight": 4.69
+        },
+        {
+          "ticker": "XLP",
+          "weight": 4.64
+        },
+        {
+          "ticker": "SMH",
+          "weight": 4.6
+        },
+        {
+          "ticker": "ARKF",
+          "weight": 2.49
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 2.48
+        },
+        {
+          "ticker": "SPY",
+          "weight": 1.96
+        },
+        {
+          "ticker": "448300.KS",
+          "weight": 1.6
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 1.43
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 1.19
+        },
+        {
+          "ticker": "QQQI",
+          "weight": 1.03
+        },
+        {
+          "ticker": "JEPQ",
+          "weight": 0.97
+        },
+        {
+          "ticker": "PLTR",
+          "weight": 0.95
+        },
+        {
+          "ticker": "KO",
+          "weight": 0.87
+        },
+        {
+          "ticker": "353200.KS",
+          "weight": 0.42
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.21
+        },
+        {
+          "ticker": "TQQQ",
+          "weight": 0.01
+        },
+        {
+          "ticker": "001740.KS",
+          "weight": 0.01
+        }
+      ]
+    },
+    {
+      "name": "연금저축",
+      "holdings": [
+        {
+          "ticker": "434060.KS",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "name": "MMF",
+      "holdings": [
+        {
+          "ticker": "CASH",
+          "weight": 100
+        }
+      ]
+    }
+  ]
+}
