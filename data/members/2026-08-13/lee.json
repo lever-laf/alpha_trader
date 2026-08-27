@@ -2,51 +2,67 @@
   "member": "리",
   "date": "2026-08-13",
   "index": 100.0,
-  "note": "직투 GOOGL 익절 후 토스로 이관. 토스 현금 전액으로 TSLA·GOOGL 각 6주 매수.",
+  "note": "직투 GOOGL 전량매도 후 토스로 이관. 배당 계좌 현금까지 합쳐 TSLA·GOOGL 각 6주 매수.",
   "holdings": [
     {
-      "ticker": "GOOGL",
-      "weight": 18.32
-    },
-    {
-      "ticker": "TSLA",
-      "weight": 17.98
-    },
-    {
-      "ticker": "CASH",
-      "weight": 16.58
-    },
-    {
       "ticker": "458730.KS",
-      "weight": 13.5
+      "weight": 13.14
     },
     {
       "ticker": "000660.KS",
-      "weight": 8.91
+      "weight": 9.34
     },
     {
-      "ticker": "003230.KS",
-      "weight": 6.88
+      "ticker": "GOOGL",
+      "weight": 8.63
+    },
+    {
+      "ticker": "TSLA",
+      "weight": 8.47
+    },
+    {
+      "ticker": "CASH",
+      "weight": 7.83
     },
     {
       "ticker": "012330.KS",
-      "weight": 6.72
+      "weight": 7.35
+    },
+    {
+      "ticker": "JEPI",
+      "weight": 7.27
+    },
+    {
+      "ticker": "USFR",
+      "weight": 7.16
+    },
+    {
+      "ticker": "003230.KS",
+      "weight": 6.8
+    },
+    {
+      "ticker": "TLTW",
+      "weight": 6.49
+    },
+    {
+      "ticker": "GLDI",
+      "weight": 6.1
     },
     {
       "ticker": "SCHD",
-      "weight": 4.02
+      "weight": 4.1
     },
     {
       "ticker": "133690.KS",
-      "weight": 3.55
+      "weight": 3.72
     },
     {
       "ticker": "360750.KS",
-      "weight": 3.41
+      "weight": 3.48
     },
     {
       "ticker": "005930.KS",
-      "weight": 0.09
+      "weight": 0.1
     },
     {
       "ticker": "BRK.B",
@@ -58,20 +74,28 @@
       "name": "직투",
       "holdings": [
         {
-          "ticker": "CASH",
-          "weight": 56.47
+          "ticker": "000660.KS",
+          "weight": 31.49
         },
         {
-          "ticker": "000660.KS",
-          "weight": 42.93
+          "ticker": "GOOGL",
+          "weight": 29.11
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 28.57
+        },
+        {
+          "ticker": "CASH",
+          "weight": 10.4
         },
         {
           "ticker": "005930.KS",
-          "weight": 0.44
+          "weight": 0.33
         },
         {
           "ticker": "BRK.B",
-          "weight": 0.16
+          "weight": 0.1
         }
       ]
     },
@@ -79,12 +103,12 @@
       "name": "ISA",
       "holdings": [
         {
-          "ticker": "003230.KS",
-          "weight": 50.59
+          "ticker": "012330.KS",
+          "weight": 51.96
         },
         {
-          "ticker": "012330.KS",
-          "weight": 49.41
+          "ticker": "003230.KS",
+          "weight": 48.04
         }
       ]
     },
@@ -92,16 +116,24 @@
       "name": "배당",
       "holdings": [
         {
-          "ticker": "GOOGL",
-          "weight": 45.43
+          "ticker": "JEPI",
+          "weight": 23.37
         },
         {
-          "ticker": "TSLA",
-          "weight": 44.6
+          "ticker": "USFR",
+          "weight": 23.0
+        },
+        {
+          "ticker": "TLTW",
+          "weight": 20.84
+        },
+        {
+          "ticker": "GLDI",
+          "weight": 19.61
         },
         {
           "ticker": "SCHD",
-          "weight": 9.97
+          "weight": 13.18
         }
       ]
     },
@@ -110,11 +142,11 @@
       "holdings": [
         {
           "ticker": "458730.KS",
-          "weight": 73.55
+          "weight": 73.46
         },
         {
           "ticker": "CASH",
-          "weight": 26.45
+          "weight": 26.54
         }
       ]
     },
@@ -123,11 +155,11 @@
       "holdings": [
         {
           "ticker": "133690.KS",
-          "weight": 51.05
+          "weight": 51.66
         },
         {
           "ticker": "360750.KS",
-          "weight": 48.95
+          "weight": 48.34
         }
       ]
     }
