@@ -2,15 +2,15 @@
   "member": "리",
   "date": "2026-08-11",
   "index": 100.0,
-  "note": "배당 ETF(USFR·JEPI·TLTW·GLDI) 정리해 현금 확보. 조정 시 재매수 대기자금으로 둠.",
+  "note": "배당 ETF 4종(USFR·JEPI·TLTW·GLDI) 약 23%씩 부분매도해 현금 확보. 조정 시 재매수 대기자금.",
   "holdings": [
     {
-      "ticker": "CASH",
-      "weight": 41.17
+      "ticker": "458730.KS",
+      "weight": 13.33
     },
     {
-      "ticker": "458730.KS",
-      "weight": 13.73
+      "ticker": "CASH",
+      "weight": 13.04
     },
     {
       "ticker": "GOOGL",
@@ -18,31 +18,47 @@
     },
     {
       "ticker": "000660.KS",
-      "weight": 8.12
+      "weight": 8.5
     },
     {
-      "ticker": "003230.KS",
-      "weight": 7.23
+      "ticker": "JEPI",
+      "weight": 7.36
+    },
+    {
+      "ticker": "USFR",
+      "weight": 7.26
     },
     {
       "ticker": "012330.KS",
-      "weight": 6.66
+      "weight": 7.26
+    },
+    {
+      "ticker": "003230.KS",
+      "weight": 7.12
+    },
+    {
+      "ticker": "TLTW",
+      "weight": 6.55
+    },
+    {
+      "ticker": "GLDI",
+      "weight": 6.18
     },
     {
       "ticker": "SCHD",
-      "weight": 4.07
+      "weight": 4.14
     },
     {
       "ticker": "133690.KS",
-      "weight": 3.6
+      "weight": 3.76
     },
     {
       "ticker": "360750.KS",
-      "weight": 3.47
+      "weight": 3.53
     },
     {
       "ticker": "005930.KS",
-      "weight": 0.08
+      "weight": 0.09
     },
     {
       "ticker": "BRK.B",
@@ -55,19 +71,19 @@
       "holdings": [
         {
           "ticker": "GOOGL",
-          "weight": 58.92
+          "weight": 57.86
         },
         {
           "ticker": "000660.KS",
-          "weight": 40.5
+          "weight": 41.56
         },
         {
           "ticker": "005930.KS",
-          "weight": 0.41
+          "weight": 0.44
         },
         {
           "ticker": "BRK.B",
-          "weight": 0.17
+          "weight": 0.14
         }
       ]
     },
@@ -75,12 +91,12 @@
       "name": "ISA",
       "holdings": [
         {
-          "ticker": "003230.KS",
-          "weight": 52.07
+          "ticker": "012330.KS",
+          "weight": 50.49
         },
         {
-          "ticker": "012330.KS",
-          "weight": 47.93
+          "ticker": "003230.KS",
+          "weight": 49.51
         }
       ]
     },
@@ -89,11 +105,27 @@
       "holdings": [
         {
           "ticker": "CASH",
-          "weight": 89.9
+          "weight": 20.67
+        },
+        {
+          "ticker": "JEPI",
+          "weight": 18.54
+        },
+        {
+          "ticker": "USFR",
+          "weight": 18.28
+        },
+        {
+          "ticker": "TLTW",
+          "weight": 16.5
+        },
+        {
+          "ticker": "GLDI",
+          "weight": 15.57
         },
         {
           "ticker": "SCHD",
-          "weight": 10.1
+          "weight": 10.43
         }
       ]
     },
@@ -102,11 +134,11 @@
       "holdings": [
         {
           "ticker": "458730.KS",
-          "weight": 73.48
+          "weight": 73.39
         },
         {
           "ticker": "CASH",
-          "weight": 26.52
+          "weight": 26.61
         }
       ]
     },
@@ -115,11 +147,11 @@
       "holdings": [
         {
           "ticker": "133690.KS",
-          "weight": 50.93
+          "weight": 51.55
         },
         {
           "ticker": "360750.KS",
-          "weight": 49.07
+          "weight": 48.45
         }
       ]
     }
