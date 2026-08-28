@@ -8,6 +8,10 @@
           조회되지 않으면 오타이거나 존재하지 않는 종목이므로 반려한다.
   - 레버리지: 신규 티커 이름에 레버리지 표현이 있으면 배수 등록을 요구한다.
               배수를 1로 두면 실효 익스포저가 실제보다 낮게 나온다.
+  - 스키마: 정해진 키 외의 필드(특히 amount/value/balance/qty/shares 같은
+            숫자 필드)는 금액·주수를 몰래 얹는 통로가 되므로 통째로 반려한다.
+  - 유출: note·member·scope 이름 같은 문자열 필드에 금액·주수로 보이는
+          표기가 있으면 guard.scan 으로 걸어 반려한다.
 
 하나라도 걸리면 종료 코드 1 을 돌려 커밋 체크를 실패시킨다.
 manifest 는 구조가 온전한 파일까지는 반영해 두어 나머지 멤버가 막히지 않게 한다.
@@ -15,14 +19,46 @@ manifest 는 구조가 온전한 파일까지는 반영해 두어 나머지 멤�
 
 import json, pathlib, sys, time, urllib.error, urllib.parse, urllib.request
 
+import guard
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 UA = {"User-Agent": "Mozilla/5.0 (compatible; alpha-trader/1.0)"}
 SEARCH = "https://finance.yahoo.com/quote/{}"
 LEV_HINT = ("3x", "2x", "lev", "bull", "bear", "ultra", "레버리지", "인버스")
 
+# README 제출 스키마에 정의된 키만 허용한다. 그 외 키(amount/value/balance/
+# qty/shares 등)가 있으면 무엇이든 반려 — 화이트리스트라 신규 유출 필드명도
+# 미리 막는다.
+ALLOWED_TOP_KEYS = {"member", "date", "index", "note", "holdings", "scopes"}
+ALLOWED_HOLDING_KEYS = {"ticker", "weight"}
+ALLOWED_SCOPE_KEYS = {"name", "holdings"}
+
 errors: list[str] = []
 notes: list[str] = []
+
+
+def check_extra_keys(rel, label: str, obj: dict, allowed: set[str]) -> bool:
+    """허용되지 않은 키가 있으면 errors 에 적고 False 를 돌려준다."""
+    extra = sorted(set(obj) - allowed)
+    if not extra:
+        return True
+    errors.append(f"{rel} — {label} 에 허용되지 않은 필드 {extra}. "
+                  f"허용 필드는 {sorted(allowed)} 뿐임(금액·잔고류 필드 금지)")
+    return False
+
+
+def check_leak_text(rel, label: str, text) -> bool:
+    """문자열 필드에 금액·주수로 보이는 표기가 있으면 errors 에 적고 False."""
+    if not isinstance(text, str) or not text:
+        return True
+    findings = guard.scan(text)
+    if not findings:
+        return True
+    detail = "; ".join(f"{f.pattern}:{f.match!r}" for f in findings)
+    errors.append(f"{rel} — {label} 에 금액·주수로 보이는 표기가 있음 ({detail}). "
+                  f"비중(%)만 남기고 지울 것")
+    return False
 
 
 def yahoo_name(ticker: str):
@@ -98,9 +134,17 @@ def main() -> int:
             errors.append(f"{rel} — date({d['date']})가 폴더명({folder})과 다름. "
                           f"둘 다 실제 매매한 날로 맞출 것"); continue
 
+        ok = True
+        ok &= check_extra_keys(rel, "최상위", d, ALLOWED_TOP_KEYS)
+        ok &= check_leak_text(rel, "member", mid)
+        ok &= check_leak_text(rel, "note", d.get("note"))
+        for s in d.get("scopes") or []:
+            if isinstance(s, dict):
+                ok &= check_extra_keys(rel, f"scopes[{s.get('name')}]", s, ALLOWED_SCOPE_KEYS)
+                ok &= check_leak_text(rel, f"scopes[{s.get('name')}].name", s.get("name"))
+
         groups = [("holdings", d.get("holdings") or [])]
         groups += [(f"scopes[{s.get('name')}]", s.get("holdings") or []) for s in d.get("scopes") or []]
-        ok = True
         for label, hs in groups:
             if not hs:
                 errors.append(f"{rel} — {label} 가 비어 있음"); ok = False; continue
@@ -113,6 +157,8 @@ def main() -> int:
                               f"(현금을 CASH 로 넣었는지 확인)"); ok = False
 
             for h in hs:
+                if isinstance(h, dict):
+                    ok = check_extra_keys(rel, f"{label} 항목", h, ALLOWED_HOLDING_KEYS) and ok
                 raw = str(h.get("ticker", "")).strip()
                 t = key(raw)
                 if not t or t == "CASH":

@@ -1,0 +1,101 @@
+name: 금액 노출 차단
+
+# PR 제목·본문, PR 안의 커밋 메시지, 변경된 파일의 diff 추가 줄을 tools/guard.py 로
+# 검사해 계좌 금액·보유 주수 표기가 병합 전에 걸러지게 한다.
+# (배경: 코딩 도구로 PR을 만들 때 본문·커밋 메시지에 평가액·매수액·보유 주수 같은
+#  실제 계좌 숫자가 그대로 들어간 사고가 있었고, squash 머지로 main 커밋 메시지까지
+#  흘러갔다. README "왜 금액이 필요 없나" — 비중(%)만으로 충분하다.)
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 검사 범위 계산
+        id: range
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base="${{ github.event.pull_request.base.sha }}"
+            head="${{ github.event.pull_request.head.sha }}"
+          else
+            base="${{ github.event.before }}"
+            head="${{ github.event.after }}"
+            # 새 브랜치 최초 push 등으로 이전 커밋이 없으면 빈 트리를 기준으로 삼는다.
+            if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ]; then
+              base="$(git hash-object -t tree /dev/null)"
+            fi
+          fi
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+          echo "head=$head" >> "$GITHUB_OUTPUT"
+
+      - name: PR 제목·본문 검사
+        id: title_body
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        shell: bash
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          { printf '%s\n' "$PR_TITLE"; printf '%s\n' "$PR_BODY"; } \
+            | python3 tools/guard.py --stdin | tee -a guard-report.txt
+          exit "${PIPESTATUS[0]}"
+
+      - name: 커밋 메시지 검사
+        id: commits
+        continue-on-error: true
+        shell: bash
+        run: |
+          python3 tools/guard.py --commits "${{ steps.range.outputs.base }}..${{ steps.range.outputs.head }}" \
+            | tee -a guard-report.txt
+          exit "${PIPESTATUS[0]}"
+
+      - name: 변경분(diff 추가 줄) 검사
+        id: diff
+        continue-on-error: true
+        shell: bash
+        run: |
+          git diff --unified=0 "${{ steps.range.outputs.base }}" "${{ steps.range.outputs.head }}" \
+            -- . ':(exclude)data/manifest.json' \
+            | grep -E '^\+' | grep -Ev '^\+\+\+' | sed 's/^\+//' \
+            | python3 tools/guard.py --stdin | tee -a guard-report.txt
+          exit "${PIPESTATUS[0]}"
+
+      - name: 결과 요약
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "### 금액 노출 차단 검사 결과"
+            echo
+            echo '```'
+            cat guard-report.txt 2>/dev/null || echo "(검사 로그 없음 — 대상 텍스트가 비어 있었음)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 최종 판정
+        if: always()
+        shell: bash
+        run: |
+          if [ "${{ steps.title_body.outcome }}" = "failure" ] || \
+             [ "${{ steps.commits.outcome }}" = "failure" ] || \
+             [ "${{ steps.diff.outcome }}" = "failure" ]; then
+            echo "금액·주수 노출 의심 항목이 발견되어 검사에 실패했습니다."
+            echo "위 'Summary' 탭의 검사 결과에서 [위치:줄번호] (패턴) '매치문자열' — 이유 를 확인하고,"
+            echo "비중(%)만 남기고 지운 뒤 PR 본문/커밋 메시지/파일을 고쳐서 다시 올리세요."
+            echo "(커밋 메시지 수정: git commit --amend 또는 git rebase -i, PR 본문 수정: GitHub Edit)"
+            exit 1
+          fi
+          echo "통과 — 금액·주수 노출 없음."
