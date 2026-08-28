@@ -73,7 +73,7 @@ def _mask_exclusions(line: str) -> str:
 # 숫자끼리만 안 붙게 하고, 영문 접미사(KRW/USD/shares/qty) 뒤에는 \b 를 그대로 둔다.
 _WON_RE = re.compile(
     r"(?:₩\s*[\d][\d,\.]*)"
-    r"|(?:[\d][\d,\.]*\s*(?:만\s*원|억\s*원|원|억)(?!\d))"
+    r"|(?:[\d][\d,\.]*\s*(?:만\s*원|억\s*원|원|억)(?![\d화칙본인천래]))"  # 원화·원칙·원본 등 제외
     r"|(?:[\d][\d,\.]*\s*KRW\b)"
 )
 _USD_RE = re.compile(
@@ -124,7 +124,7 @@ def _scan_keywords(lineno: int, line: str, masked: str) -> list[Finding]:
             continue
         # 한 자리 숫자(주로 "현금 0", "입금 0" 같은 잔액 없음 서술)는 제외한다.
         # 실제 금액은 최소 두 자리 이상이라 2자리 미만은 노이즈일 뿐이다.
-        num = re.search(r"\d{2,}[\d,\.]*", masked)
+        num = re.search(r"\d{3,}[\d,\.]*|\d{1,3},\d{3}", masked)  # 08-13 같은 날짜 조각은 제외
         if not num:
             continue
         match_text = f"{line[km.start():km.end()]} ... {line[num.start():num.end()]}"

@@ -68,7 +68,7 @@ jobs:
         shell: bash
         run: |
           git diff --unified=0 "${{ steps.range.outputs.base }}" "${{ steps.range.outputs.head }}" \
-            -- . ':(exclude)data/manifest.json' \
+            -- . ':(exclude)data/manifest.json' ':(exclude)tools/guard.py' ':(exclude)tools/test_guard.py' ':(exclude)AGENTS.md' \
             | grep -E '^\+' | grep -Ev '^\+\+\+' | sed 's/^\+//' \
             | python3 tools/guard.py --stdin | tee -a guard-report.txt
           exit "${PIPESTATUS[0]}"

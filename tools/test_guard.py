@@ -76,6 +76,8 @@ class 정상문장은_통과한다(unittest.TestCase):
 
     def test_종목_등락률(self):
         self.assertEqual(scan("000660.KS +11.8%"), [])
+        self.assertEqual(scan("비중은 7/30 제출분에 7/30→8/10 원화 등락을 곱해 산출했다"), [])
+        self.assertEqual(scan("계좌 평가액을 모르므로 08-13 매수분이 현금 전액이었다고 봤다"), [])
 
     def test_pr3_본문_예시(self):
         text = (
