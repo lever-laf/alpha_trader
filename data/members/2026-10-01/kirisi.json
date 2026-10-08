@@ -1,0 +1,60 @@
+{
+  "member": "Kirisi",
+  "date": "2026-10-01",
+  "index": 94.1397,
+  "note": "테슬라 전량 매도.",
+  "holdings": [
+    {
+      "ticker": "O",
+      "weight": 19.49
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 18.24
+    },
+    {
+      "ticker": "PFE",
+      "weight": 13.2
+    },
+    {
+      "ticker": "005387.KS",
+      "weight": 12.47
+    },
+    {
+      "ticker": "MO",
+      "weight": 10.62
+    },
+    {
+      "ticker": "GLDM",
+      "weight": 9.22
+    },
+    {
+      "ticker": "POET",
+      "weight": 6.1
+    },
+    {
+      "ticker": "NKE",
+      "weight": 4.76
+    },
+    {
+      "ticker": "UPS",
+      "weight": 3.03
+    },
+    {
+      "ticker": "T",
+      "weight": 2.34
+    },
+    {
+      "ticker": "PEP",
+      "weight": 0.3
+    },
+    {
+      "ticker": "SPCX",
+      "weight": 0.18
+    },
+    {
+      "ticker": "AMZN",
+      "weight": 0.05
+    }
+  ]
+}
