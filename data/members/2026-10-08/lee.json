@@ -2,55 +2,51 @@
   "member": "리",
   "date": "2026-10-08",
   "index": 100,
-  "note": "현재 보유현황 기준 갱신. 배당 계좌를 직투로 통합했으며 현금 비중은 근삿값. 과거 거래일별 비중은 복원하지 않음. TDF는 별도 표시하고 시세 미지원으로 수익률 계산 보류.",
+  "note": "현재 보유현황 기준 갱신. 배당 계좌를 직투로 통합했으며 현금 비중은 근삿값. TDF는 집계에서 제외하고 나머지 자산을 기준으로 비중과 수익률을 계산. 과거 거래일별 비중은 복원하지 않음.",
   "holdings": [
     {
       "ticker": "JAAA",
-      "weight": 24.08
+      "weight": 25.18
     },
     {
       "ticker": "000660.KS",
-      "weight": 13.31
+      "weight": 13.92
     },
     {
       "ticker": "TSLA",
-      "weight": 12.87
+      "weight": 13.46
     },
     {
       "ticker": "GOOGL",
-      "weight": 11.94
+      "weight": 12.49
     },
     {
       "ticker": "458730.KS",
-      "weight": 10.77
+      "weight": 11.26
     },
     {
       "ticker": "003230.KS",
-      "weight": 5.97
+      "weight": 6.24
     },
     {
       "ticker": "CASH",
-      "weight": 5.21
+      "weight": 5.45
     },
     {
       "ticker": "012330.KS",
-      "weight": 4.65
-    },
-    {
-      "ticker": "FUND-TDF2050-O",
-      "weight": 4.38
+      "weight": 4.86
     },
     {
       "ticker": "133690.KS",
-      "weight": 3.29
+      "weight": 3.44
     },
     {
       "ticker": "360750.KS",
-      "weight": 2.96
+      "weight": 3.1
     },
     {
       "ticker": "SPCX",
-      "weight": 0.57
+      "weight": 0.6
     }
   ],
   "scopes": [
@@ -105,15 +101,11 @@
       "holdings": [
         {
           "ticker": "458730.KS",
-          "weight": 69.91
-        },
-        {
-          "ticker": "FUND-TDF2050-O",
-          "weight": 28.44
+          "weight": 97.69
         },
         {
           "ticker": "CASH",
-          "weight": 1.65
+          "weight": 2.31
         }
       ]
     },

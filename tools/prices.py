@@ -98,9 +98,6 @@ def main() -> int:
 
     series, missing, newly = {}, [], []
     for t in tickers:
-        if INSTR.get(t, {}).get("pricing") == "unavailable":
-            missing.append(t)
-            continue
         r = fetch(t, start, today)
         if not r:
             missing.append(t); continue
