@@ -133,6 +133,12 @@ def main() -> int:
         krw[t] = ({d: v * fxk[d] for d, v in p.items() if d in fxk}
                   if r["ccy"] != "KRW" else p)
 
+    # 종목별 원화환산 일별 가격(forward-fill 완료). 대시보드가 기간별 수익률을 계산하는 데 쓴다.
+    # 종목 가격일 뿐이며 멤버별 금액·주수는 담지 않는다.
+    # 주말은 직전 거래일 값의 반복이라 빼고(기간 시작일이 일요일로 잡히는 것을 막음), 기준일은 항상 남긴다.
+    keep = lambda d: date.fromisoformat(d).weekday() < 5 or d == days[-1]
+    prices = {t: {d: round(v, 2) for d, v in sorted(ser.items()) if keep(d)} for t, ser in krw.items()}
+
     # ── 멤버별 chain-link ──
     out, held, holdingsReturns = {}, {}, {}
     for mid, snaps in members.items():
@@ -187,6 +193,7 @@ def main() -> int:
         "basis": "세전 총수익(배당 재투자 반영) · 원화 환산",
         "members": out,
         "holdingsReturns": holdingsReturns,
+        "prices": prices,
         "newInstruments": newly,
         "onHold": held,
         "warnings": warnings,

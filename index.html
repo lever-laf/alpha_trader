@@ -75,6 +75,8 @@
   .hero .aside div { text-align:right; }
   .hero .aside .k { font-family:var(--mono); font-size:10.5px; letter-spacing:.07em;
                     text-transform:uppercase; color:var(--ink-3); }
+  .hero .aside .v.pos { color:var(--up); } .hero .aside .v.neg { color:var(--down); }
+  .hero .aside .cap { font-size:11px; color:var(--ink-3); margin-top:3px; }
   .hero .aside .v { font-size:19px; font-weight:620; letter-spacing:-.02em; margin-top:4px;
                     font-variant-numeric:tabular-nums; }
 
@@ -194,6 +196,10 @@
              text-transform:uppercase; color:var(--ink-3); font-weight:500; padding:0 0 9px;
              border-bottom:1px solid var(--rule-firm); white-space:nowrap; }
   thead th:first-child, thead th.l { text-align:left; }
+  thead th.sortable { cursor:pointer; user-select:none; transition:filter .12s ease; }
+  thead th.sortable:hover { filter:brightness(1.25); }
+  thead th.sortable:focus-visible { outline:1px solid var(--rule-firm); outline-offset:2px; }
+  thead th .sort-ind { display:inline-block; width:1em; font-size:.8em; opacity:.9; }
   tbody td { padding:9px 0; border-bottom:1px solid var(--grid); text-align:right;
              font-variant-numeric:tabular-nums; }
   tbody td.l { text-align:left; }
@@ -257,7 +263,8 @@
     <b>산출 방식</b> — 비중 = 종목 평가금 ÷ 총 평가금(각자 계산, 금액은 제출하지 않음).
     실효 비중 = 비중 × 레버리지 배수. 레버리지 배수는 일간 수익률 기준이라 보유가 길어질수록 실제 추종 배율은 이 값에서 벌어짐.<br>
     <b>수익률</b> — 각 멤버의 첫 스냅샷이 지수 100.0. 스냅샷 A→B 구간은 A의 비중을 유지했다고 보고 구간 수익률을 chain-link함.
-    이전 매매 손익은 계산에 넣지 않음. 전부 원화 환산(일별 USD/KRW), 환차익 포함. 세금은 반영하지 않는 세전 기준임 — 계좌·개인 소득에 따라 세율이 달라 비교가 성립하지 않기 때문임.<br>
+    이전 매매 손익은 계산에 넣지 않음. 전부 원화 환산(일별 USD/KRW), 환차익 포함. 세금은 반영하지 않는 세전 기준임 — 계좌·개인 소득에 따라 세율이 달라 비교가 성립하지 않기 때문임.
+    연환산 = (누적 지수/100)^(365/보유일수) − 1, 복리 기준. 1년 미만 구간은 추세를 연 단위로 환산한 참고치.<br>
     <b>공개 범위</b> — 평가금·손익금·원금 등 금액은 일절 들어 있지 않음.<br>
     <b>미확인</b> — KODEX SK하이닉스 단일종목 레버리지(0193T0)의 배수를 확정하지 못해 1배로 계산함. ETHU는 2배로 봄.
     lever 스냅샷은 증권 앱 화면에서 환산했고 현금(예수금)을 0으로 가정함.
@@ -342,6 +349,16 @@ let active = "__all__";
 const heldOf = m => (RESULTS && RESULTS.onHold && RESULTS.onHold[m.id]) || null;
 const idxOf = m => m.index ?? (m.snapshots.length ? m.snapshots[m.snapshots.length - 1].index : 100);
 function memberReturn(m) { return idxOf(m) - 100; }
+/* 연환산(CAGR) — 멤버 첫 스냅샷 → 기준일 달력일수 기준. 계산 불가면 null */
+function annualOf(m) {
+  const asOf = RESULTS && RESULTS.asOf;
+  if (!asOf || !m.snapshots.length) return null;
+  const days = Math.round((Date.parse(asOf + "T00:00:00Z") - Date.parse(m.snapshots[0].date + "T00:00:00Z")) / 864e5);
+  const idx = idxOf(m);
+  if (!(days >= 1) || !(idx > 0)) return null;
+  return { days, pct: ((idx / 100) ** (365 / days) - 1) * 100 };
+}
+const annualCls = a => a && a.pct > .05 ? "pos" : a && a.pct < -.05 ? "neg" : "";
 
 function renderTabs() {
   const tabs = document.getElementById("tabs");
@@ -392,6 +409,7 @@ function renderHero() {
   }
   const r = memberReturn(m);
   const cls = r > 0.05 ? "pos" : r < -0.05 ? "neg" : "flat";
+  const ann = annualOf(m);
   el.innerHTML = `
     <div>
       <div class="who">${esc(m.id)} · 누적 수익률</div>
@@ -402,6 +420,8 @@ function renderHero() {
     </div>
     <div class="aside">
       <div><div class="k">누적 지수</div><div class="v">${f1(idxOf(m))}</div></div>
+      <div><div class="k">연환산</div><div class="v ${annualCls(ann)}">${ann ? signed(ann.pct) + "%" : "—"}</div>
+        ${ann ? `<div class="cap">${ann.days}일 복리 환산</div>` : ""}</div>
       <div><div class="k">기준일</div><div class="v">${asOfDate.slice(5)}</div></div>
     </div>`;
 }
@@ -487,6 +507,159 @@ function donutSVG(themes) {
     <g transform="rotate(-90 100 100)" fill="none" stroke-width="26">${s}</g></svg>`;
 }
 
+/* ── 전체 보유 내역 표: 헤더 클릭 정렬 (상태는 모듈 스코프에 유지) ── */
+const HOLD_COLS = [
+  { key:"name",    label:"종목",    text:true,  cls:"" },
+  { key:"t",       label:"티커",    text:true,  cls:"l" },
+  { key:"sub",     label:"테마",    text:true,  cls:"l" },
+  { key:"w",       label:"비중",    text:false, cls:"" },
+  { key:"eff",     label:"실효 비중", text:false, cls:"" },
+  { key:"ret",     label:"수익률",   text:false, cls:"" },
+  { key:"contrib", label:"기여도",   text:false, cls:"" },
+];
+let holdSort = { key:null, dir:1 };   /* key null = 기본 순서(비중 내림차순), dir 1 오름 / -1 내림 */
+let holdCtx = null;                   /* renderMember 가 채우는 현재 표 데이터 */
+let holdPeriod = "all";               /* all 전체 · week 이번 주 · month 이번 달 */
+const HOLD_PERIODS = [{ key:"all", label:"전체" }, { key:"week", label:"이번 주" }, { key:"month", label:"이번 달" }];
+
+/* ── 기간별 종목 수익률 ── */
+const addDays = (iso, n) => { const d = new Date(iso + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+
+/* 기간의 이론상 시작 경계: 이 날짜 "이전"의 마지막 가격일이 기준가. 전체는 경계 없음(null). */
+function periodBoundary(period, asOf) {
+  if (period === "week") return addDays(asOf, -((new Date(asOf + "T00:00:00Z").getUTCDay() + 6) % 7));   /* 그 주 월요일 */
+  if (period === "month") return asOf.slice(0, 8) + "01";
+  return null;
+}
+
+/* 기준가 날짜 산출. heldSince = 현재까지 연속 보유한 첫 스냅샷 날짜, days = 그 종목 가격일(오름차순). */
+function startDateFor(period, asOf, heldSince, days) {
+  const bound = periodBoundary(period, asOf);
+  let want = heldSince;
+  if (bound) {
+    const prev = [...days].reverse().find(d => d < bound);   /* 월요일·1일 이전 마지막 가격일 */
+    if (prev && prev > heldSince) want = prev;               /* 보유 시작이 더 늦으면 보유 시작일 */
+  }
+  const ok = [...days].reverse().find(d => d <= want);       /* 가격이 없으면 그 이전 가장 가까운 날짜 */
+  return ok || null;
+}
+
+/* 멤버가 그 종목을 현재까지 연속 보유한 첫 스냅샷 날짜 (마지막부터 거꾸로, 끊기면 중단) */
+function heldSinceOf(snapshots, key) {
+  let since = null;
+  for (let i = snapshots.length - 1; i >= 0; i--) {
+    if (snapshots[i].holdings.some(h => h.w > 0 && keyOf(h.t) === key)) since = snapshots[i].date;
+    else break;
+  }
+  return since;
+}
+
+/* 한 종목의 현재 기간 수익률(%)과 실제 기준가 날짜 */
+function holdReturnOf(m, t) {
+  const prices = RESULTS && RESULTS.prices, asOf = RESULTS && RESULTS.asOf;
+  const ser = prices && prices[keyOf(t)];
+  if (!ser || !asOf) return { ret:null, from:null };
+  const days = Object.keys(ser).sort();
+  const since = heldSinceOf(m.snapshots, keyOf(t));
+  if (!since) return { ret:null, from:null };
+  const from = startDateFor(holdPeriod, asOf, since, days);
+  const end = ser[asOf] ?? ser[[...days].reverse().find(d => d <= asOf)];
+  if (!from || !end || !ser[from]) return { ret:null, from:null };
+  return { ret:(end / ser[from] - 1) * 100, from };
+}
+
+const holdVal = (d, key) => key === "name" ? d.r.name : key === "t" ? d.r.t : key === "sub" ? d.sub
+                          : key === "ret" ? d.ret : key === "contrib" ? d.contrib : d.r[key];
+
+function sortedHoldRows(rows) {
+  rows = rows.slice();
+  const { key, dir } = holdSort;
+  if (!key) return rows;
+  const col = HOLD_COLS.find(c => c.key === key);
+  return rows.sort((x, y) => {
+    const a = holdVal(x, key), b = holdVal(y, key);
+    const an = a === null || a === undefined, bn = b === null || b === undefined;
+    if (an || bn) return an && bn ? x.i - y.i : an ? 1 : -1;   /* null 은 방향 무관 맨 아래 */
+    const c = col.text ? String(a).localeCompare(String(b), "ko") : a - b;
+    return c ? c * dir : x.i - y.i;
+  });
+}
+
+/* 현재 기간 기준 수익률·기여도를 채운 행 + 합계 + 표시 구간 */
+function holdEnriched() {
+  const { rows, m } = holdCtx;
+  let contribTotal = 0, contribKnown = false, minFrom = null;
+  const out = rows.map(d => {
+    const { ret, from } = holdReturnOf(m, d.r.t);
+    const contrib = ret === null ? null : (d.r.w / 100) * ret;
+    if (contrib !== null) { contribTotal += contrib; contribKnown = true; }
+    if (from && (!minFrom || from < minFrom)) minFrom = from;
+    return { ...d, ret, contrib };
+  });
+  return { rows: out, contribTotal, contribKnown, minFrom };
+}
+
+function holdNoteHTML() {
+  const asOf = RESULTS && RESULTS.asOf;
+  const { contribKnown, minFrom } = holdEnriched();
+  const label = holdPeriod === "all" ? `보유 시작일 → ${esc(asOf)}` : `${esc(minFrom || "—")} → ${esc(asOf)}`;
+  return `위 차트와 동일한 데이터. 금액 항목은 포함하지 않음.
+        ${contribKnown ? `종목 수익률은 <b>${label}</b> 기준 가격 변동(배당 재투자 반영, 원화 환산). 기여도는 현재 비중 × 수익률.`
+                       : "종목별 수익률은 다음 시세 갱신 이후 표시됨."}`;
+}
+
+function holdTableHTML() {
+  const { a } = holdCtx;
+  const E = holdEnriched(), { contribTotal, contribKnown } = E;
+  const head = HOLD_COLS.map(c => {
+    const on = holdSort.key === c.key;
+    return `<th scope="col" class="sortable${c.cls ? " " + c.cls : ""}" data-sort="${c.key}" tabindex="0"
+      aria-sort="${on ? (holdSort.dir === 1 ? "ascending" : "descending") : "none"}">${c.label}<span class="sort-ind">${on ? (holdSort.dir === 1 ? "▲" : "▼") : ""}</span></th>`;
+  }).join("");
+  const body = sortedHoldRows(E.rows).map(({ r, ret, contrib, sub }) => `
+    <tr><th scope="row"><span class="tname"><span class="swatch" style="background:${THEME_COLOR[r.theme] || "var(--s8)"}"></span>${esc(r.name)}</span></th>
+      <td class="l tk">${esc(r.t)}</td><td class="l">${esc(sub)}</td>
+      <td>${f2(r.w)}%</td><td>${f2(r.eff)}%</td>
+      <td class="${ret > 0.05 ? "pos" : ret < -0.05 ? "neg" : ""}">${ret === null ? "—" : signed(ret) + "%"}</td>
+      <td class="${contrib > 0.005 ? "pos" : contrib < -0.005 ? "neg" : ""}">${contrib === null ? "—" : signed2(contrib) + "%p"}</td></tr>`).join("");
+  return `<table>
+        <thead><tr>${head}</tr></thead>
+        <tbody>${body}</tbody>
+        <tfoot><tr><th scope="row">합계</th><td></td><td></td>
+          <td>${f2(a.nominal)}%</td><td>${f2(a.effective)}%</td><td></td>
+          <td>${contribKnown ? signed2(contribTotal) + "%p" : "—"}</td></tr></tfoot>
+      </table>`;
+}
+
+/* 이벤트 위임: 표 래퍼에 한 번만 바인딩, 정렬 시 표 부분만 다시 그림 */
+function bindHoldSort(root) {
+  const wrap = root.querySelector("#holdTable");
+  if (!wrap) return;
+  const card = wrap.closest("section");
+  card.addEventListener("click", e => {
+    const b = e.target.closest("[data-period]");
+    if (!b) return;
+    holdPeriod = b.dataset.period;
+    card.querySelectorAll("[data-period]").forEach(x => x.setAttribute("aria-selected", x === b));
+    card.querySelector("#holdNote").innerHTML = holdNoteHTML();
+    wrap.innerHTML = holdTableHTML();
+  });
+  const sortBy = th => {
+    const key = th.dataset.sort, col = HOLD_COLS.find(c => c.key === key);
+    if (holdSort.key === key) holdSort.dir = -holdSort.dir;
+    else holdSort = { key, dir: col.text ? 1 : -1 };   /* 첫 클릭: 문자 오름 / 숫자 내림 */
+    wrap.innerHTML = holdTableHTML();
+    const again = wrap.querySelector(`th[data-sort="${key}"]`);
+    if (again) again.focus({ preventScroll:true });
+  };
+  wrap.addEventListener("click", e => { const th = e.target.closest("th[data-sort]"); if (th) sortBy(th); });
+  wrap.addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const th = e.target.closest("th[data-sort]");
+    if (th) { e.preventDefault(); sortBy(th); }
+  });
+}
+
 function renderMember(m) {
   const last = m.snapshots[m.snapshots.length - 1];
   const sets = [{ name:"통합", holdings:last.holdings }, ...(last.scopes || [])];
@@ -522,19 +695,7 @@ function renderMember(m) {
       <span class="val">${f2(r.w)}%</span>
     </div>`).join("");
 
-  const hr = m.holdRet && m.holdRet.holdings;
-  let contribTotal = 0, contribKnown = false;
-  const tableRows = a.rows.map(r => {
-    const ret = hr && hr[r.t] && typeof hr[r.t].ret === "number" ? hr[r.t].ret : null;
-    const contrib = ret === null ? null : (r.w / 100) * ret;
-    if (contrib !== null) { contribTotal += contrib; contribKnown = true; }
-    return `
-    <tr><th scope="row"><span class="tname"><span class="swatch" style="background:${THEME_COLOR[r.theme] || "var(--s8)"}"></span>${esc(r.name)}</span></th>
-      <td class="l tk">${esc(r.t)}</td><td class="l">${esc(r.sub || r.theme)}</td>
-      <td>${f2(r.w)}%</td><td>${f2(r.eff)}%</td>
-      <td class="${ret > 0.05 ? "pos" : ret < -0.05 ? "neg" : ""}">${ret === null ? "—" : signed(ret) + "%"}</td>
-      <td class="${contrib > 0.005 ? "pos" : contrib < -0.005 ? "neg" : ""}">${contrib === null ? "—" : signed2(contrib) + "%p"}</td></tr>`;
-  }).join("");
+  holdCtx = { rows: a.rows.map((r, i) => ({ r, i, sub: r.sub || r.theme })), a, m };
 
   return `
     ${scopeBar}
@@ -586,18 +747,11 @@ function renderMember(m) {
     </section>
 
     <section class="card">
-      <header><h2>전체 보유 내역</h2><p class="note">위 차트와 동일한 데이터. 금액 항목은 포함하지 않음.
-        ${hr ? `종목 수익률은 <b>${esc(m.holdRet.from)} → ${esc(m.holdRet.to)}</b> 구간 가격 변동(배당 재투자 반영, 원화 환산) 기준 — 비중이 바뀌기 전 구간만 계산함.`
-             : "종목별 수익률은 다음 시세 갱신 이후 표시됨."}</p></header>
-      <div class="tablewrap"><table>
-        <thead><tr><th scope="col">종목</th><th scope="col" class="l">티커</th>
-          <th scope="col" class="l">테마</th><th scope="col">비중</th><th scope="col">실효 비중</th>
-          <th scope="col">수익률</th><th scope="col">기여도</th></tr></thead>
-        <tbody>${tableRows}</tbody>
-        <tfoot><tr><th scope="row">합계</th><td></td><td></td>
-          <td>${f2(a.nominal)}%</td><td>${f2(a.effective)}%</td><td></td>
-          <td>${contribKnown ? signed2(contribTotal) + "%p" : "—"}</td></tr></tfoot>
-      </table></div>
+      <header><h2>전체 보유 내역</h2><p class="note" id="holdNote">${holdNoteHTML()}</p></header>
+      <div class="tabbar" style="margin-bottom:12px"><div class="tabs scopes" role="tablist">${
+        HOLD_PERIODS.map(x => `<button role="tab" data-period="${x.key}" aria-selected="${x.key === holdPeriod}">${x.label}</button>`).join("")
+      }</div><span class="navhint">수익률 기간</span></div>
+      <div class="tablewrap" id="holdTable">${holdTableHTML()}</div>
     </section>`;
 }
 
@@ -631,15 +785,16 @@ function renderOverview() {
     <section class="card">
       <header><h2>멤버 비교</h2><p class="note">최신 스냅샷 기준. 등수는 매기지 않음.</p></header>
       <div class="tablewrap"><table>
-        <thead><tr><th scope="col">멤버</th><th scope="col">누적</th><th scope="col">지수</th>
+        <thead><tr><th scope="col">멤버</th><th scope="col">누적</th><th scope="col">지수</th><th scope="col">연환산</th>
           <th scope="col">종목</th><th scope="col">현금</th><th scope="col">최대 테마</th>
           <th scope="col">실효 익스포저</th><th scope="col">최대 단일</th></tr></thead>
         <tbody>${rows.map(x => `<tr>
           <th scope="row"><span class="tname"><span class="swatch" style="background:${x.c}"></span>${esc(x.m.id)}</span></th>
           ${heldOf(x.m)
-            ? `<td colspan="2" style="color:var(--ink-3)">계산 보류</td>`
+            ? `<td colspan="3" style="color:var(--ink-3)">계산 보류</td>`
             : `<td class="${x.r > .05 ? "pos" : x.r < -.05 ? "neg" : ""}">${signed(x.r)}%</td>
-               <td>${f1(idxOf(x.m))}</td>`}
+               <td>${f1(idxOf(x.m))}</td>
+               <td class="${annualCls(annualOf(x.m))}">${annualOf(x.m) ? signed(annualOf(x.m).pct) + "%" : "—"}</td>`}
           <td>${x.a.equity.length}</td>
           <td>${f1(x.a.cash)}%</td>
           <td>${x.a.topTheme ? esc(x.a.topTheme.theme) + " " + f1(x.a.topTheme.w) + "%" : "—"}</td>
@@ -721,6 +876,7 @@ function render() {
   }
   view.querySelectorAll("[data-scope]").forEach(b =>
     b.addEventListener("click", () => { activeScope = +b.dataset.scope; render(); }));
+  bindHoldSort(view);
   bindTips(view);
   scrollTo({ top:0, behavior:"instant" });
 }
@@ -781,8 +937,6 @@ async function boot() {
     CLUB.members.forEach(m => {
       const r = RESULTS && RESULTS.members && RESULTS.members[m.id];
       if (r) { m.index = r.index; m.series = r.series; }
-      const hr = RESULTS && RESULTS.holdingsReturns && RESULTS.holdingsReturns[m.id];
-      if (hr) { m.holdRet = hr; }
     });
 
     allDates = [...new Set(CLUB.members.flatMap(m => m.snapshots.map(s => s.date)))].sort();
