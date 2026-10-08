@@ -314,6 +314,16 @@
     "SPCX": {
       "n": "스페이스X",
       "th": "산업·모빌리티"
+    },
+    "005387.KS": {
+      "n": "Hyundai Motor Company",
+      "th": "기타",
+      "v": 1
+    },
+    "AMZN": {
+      "n": "Amazon.com, Inc.",
+      "th": "기타",
+      "v": 1
     }
   },
   "alias": {
