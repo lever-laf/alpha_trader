@@ -90,6 +90,15 @@
       ]
     },
     {
+      "date": "2026-09-04",
+      "members": [
+        {
+          "id": "바오",
+          "file": "bao.json"
+        }
+      ]
+    },
+    {
       "date": "2026-09-17",
       "members": [
         {
@@ -120,6 +129,10 @@
       "date": "2026-09-30",
       "members": [
         {
+          "id": "바오",
+          "file": "bao.json"
+        },
+        {
           "id": "lever",
           "file": "lever.json"
         }
@@ -138,8 +151,21 @@
       "date": "2026-10-07",
       "members": [
         {
+          "id": "바오",
+          "file": "bao.json"
+        },
+        {
           "id": "Marry",
           "file": "marry.json"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-08",
+      "members": [
+        {
+          "id": "바오",
+          "file": "bao.json"
         }
       ]
     }

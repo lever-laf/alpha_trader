@@ -1,0 +1,88 @@
+{
+  "member": "바오",
+  "date": "2026-09-30",
+  "index": 100.0,
+  "note": "해외 계좌 달러 현금 확보(환전), 종목 매매 없음.",
+  "holdings": [
+    {
+      "ticker": "NVDA",
+      "weight": 14.35
+    },
+    {
+      "ticker": "0190G0.KS",
+      "weight": 13.0
+    },
+    {
+      "ticker": "AMD",
+      "weight": 12.12
+    },
+    {
+      "ticker": "035420.KS",
+      "weight": 7.02
+    },
+    {
+      "ticker": "005930.KS",
+      "weight": 6.66
+    },
+    {
+      "ticker": "379800.KS",
+      "weight": 6.44
+    },
+    {
+      "ticker": "379810.KS",
+      "weight": 6.01
+    },
+    {
+      "ticker": "034020.KS",
+      "weight": 5.45
+    },
+    {
+      "ticker": "458730.KS",
+      "weight": 4.45
+    },
+    {
+      "ticker": "AAPL",
+      "weight": 4.31
+    },
+    {
+      "ticker": "HOOD",
+      "weight": 3.85
+    },
+    {
+      "ticker": "395160.KS",
+      "weight": 3.45
+    },
+    {
+      "ticker": "RBLX",
+      "weight": 2.86
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 2.43
+    },
+    {
+      "ticker": "OKLO",
+      "weight": 2.39
+    },
+    {
+      "ticker": "ORCL",
+      "weight": 1.8
+    },
+    {
+      "ticker": "TSLL",
+      "weight": 1.01
+    },
+    {
+      "ticker": "CASH",
+      "weight": 0.93
+    },
+    {
+      "ticker": "BABA",
+      "weight": 0.86
+    },
+    {
+      "ticker": "ETHU",
+      "weight": 0.61
+    }
+  ]
+}

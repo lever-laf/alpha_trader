@@ -1,0 +1,88 @@
+{
+  "member": "바오",
+  "date": "2026-10-08",
+  "index": 100.0,
+  "note": "ISA에서 KODEX 반도체타겟위클리커버드콜 소량 추가 매수.",
+  "holdings": [
+    {
+      "ticker": "NVDA",
+      "weight": 14.41
+    },
+    {
+      "ticker": "0190G0.KS",
+      "weight": 13.46
+    },
+    {
+      "ticker": "AMD",
+      "weight": 12.35
+    },
+    {
+      "ticker": "379800.KS",
+      "weight": 6.73
+    },
+    {
+      "ticker": "379810.KS",
+      "weight": 6.56
+    },
+    {
+      "ticker": "035420.KS",
+      "weight": 6.56
+    },
+    {
+      "ticker": "005930.KS",
+      "weight": 6.53
+    },
+    {
+      "ticker": "034020.KS",
+      "weight": 5.03
+    },
+    {
+      "ticker": "458730.KS",
+      "weight": 4.27
+    },
+    {
+      "ticker": "AAPL",
+      "weight": 4.2
+    },
+    {
+      "ticker": "HOOD",
+      "weight": 3.62
+    },
+    {
+      "ticker": "395160.KS",
+      "weight": 3.4
+    },
+    {
+      "ticker": "RBLX",
+      "weight": 3.02
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 2.39
+    },
+    {
+      "ticker": "OKLO",
+      "weight": 2.29
+    },
+    {
+      "ticker": "ORCL",
+      "weight": 1.81
+    },
+    {
+      "ticker": "TSLL",
+      "weight": 1.1
+    },
+    {
+      "ticker": "CASH",
+      "weight": 0.9
+    },
+    {
+      "ticker": "BABA",
+      "weight": 0.83
+    },
+    {
+      "ticker": "ETHU",
+      "weight": 0.54
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "member": "바오",
+  "date": "2026-09-04",
+  "index": 100.0,
+  "note": "연금저축 정기 적립으로 KODEX 미국S&P500·미국나스닥100 추가 매수, ISA에서 KODEX 반도체타겟위클리커버드콜 소량 추가.",
+  "holdings": [
+    {
+      "ticker": "NVDA",
+      "weight": 15.12
+    },
+    {
+      "ticker": "0190G0.KS",
+      "weight": 11.96
+    },
+    {
+      "ticker": "AMD",
+      "weight": 9.87
+    },
+    {
+      "ticker": "035420.KS",
+      "weight": 8.08
+    },
+    {
+      "ticker": "379800.KS",
+      "weight": 6.77
+    },
+    {
+      "ticker": "005930.KS",
+      "weight": 6.61
+    },
+    {
+      "ticker": "379810.KS",
+      "weight": 6.11
+    },
+    {
+      "ticker": "034020.KS",
+      "weight": 5.52
+    },
+    {
+      "ticker": "458730.KS",
+      "weight": 4.92
+    },
+    {
+      "ticker": "HOOD",
+      "weight": 4.36
+    },
+    {
+      "ticker": "AAPL",
+      "weight": 4.32
+    },
+    {
+      "ticker": "395160.KS",
+      "weight": 3.3
+    },
+    {
+      "ticker": "RBLX",
+      "weight": 3.05
+    },
+    {
+      "ticker": "OKLO",
+      "weight": 2.78
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 2.49
+    },
+    {
+      "ticker": "ORCL",
+      "weight": 2.17
+    },
+    {
+      "ticker": "TSLL",
+      "weight": 1.07
+    },
+    {
+      "ticker": "BABA",
+      "weight": 0.95
+    },
+    {
+      "ticker": "ETHU",
+      "weight": 0.55
+    },
+    {
+      "ticker": "CASH",
+      "weight": 0.0
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "member": "바오",
+  "date": "2026-10-07",
+  "index": 100.0,
+  "note": "연금저축 정기 적립으로 KODEX 미국S&P500·미국나스닥100 추가 매수.",
+  "holdings": [
+    {
+      "ticker": "NVDA",
+      "weight": 14.44
+    },
+    {
+      "ticker": "0190G0.KS",
+      "weight": 12.99
+    },
+    {
+      "ticker": "AMD",
+      "weight": 12.36
+    },
+    {
+      "ticker": "379800.KS",
+      "weight": 6.75
+    },
+    {
+      "ticker": "035420.KS",
+      "weight": 6.7
+    },
+    {
+      "ticker": "379810.KS",
+      "weight": 6.57
+    },
+    {
+      "ticker": "005930.KS",
+      "weight": 6.51
+    },
+    {
+      "ticker": "034020.KS",
+      "weight": 5.26
+    },
+    {
+      "ticker": "458730.KS",
+      "weight": 4.3
+    },
+    {
+      "ticker": "AAPL",
+      "weight": 4.21
+    },
+    {
+      "ticker": "HOOD",
+      "weight": 3.62
+    },
+    {
+      "ticker": "395160.KS",
+      "weight": 3.39
+    },
+    {
+      "ticker": "RBLX",
+      "weight": 3.02
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 2.39
+    },
+    {
+      "ticker": "OKLO",
+      "weight": 2.3
+    },
+    {
+      "ticker": "ORCL",
+      "weight": 1.82
+    },
+    {
+      "ticker": "TSLL",
+      "weight": 1.1
+    },
+    {
+      "ticker": "CASH",
+      "weight": 0.9
+    },
+    {
+      "ticker": "BABA",
+      "weight": 0.83
+    },
+    {
+      "ticker": "ETHU",
+      "weight": 0.54
+    }
+  ]
+}
