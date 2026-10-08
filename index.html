@@ -71,7 +71,7 @@
   .hero .ret.pos { color:var(--up); } .hero .ret.neg { color:var(--down); }
   .hero .ret.flat { color:var(--ink); }
   .hero .cap { font-size:13px; color:var(--ink-2); margin-top:8px; }
-  .hero .aside { display:flex; gap:28px; }
+  .hero .aside { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:14px 28px; }
   .hero .aside div { text-align:right; }
   .hero .aside .k { font-family:var(--mono); font-size:10.5px; letter-spacing:.07em;
                     text-transform:uppercase; color:var(--ink-3); }
@@ -234,7 +234,7 @@
     .wrap { padding:24px 14px 56px; }
     .card, .hero { padding:18px 16px 20px; }
     .masthead h1 { font-size:20px; }
-    .hero .aside { gap:20px; }
+    .hero .aside { gap:12px 18px; justify-content:flex-start; }
   }
 </style>
 </head>
@@ -264,7 +264,7 @@
     실효 비중 = 비중 × 레버리지 배수. 레버리지 배수는 일간 수익률 기준이라 보유가 길어질수록 실제 추종 배율은 이 값에서 벌어짐.<br>
     <b>수익률</b> — 각 멤버의 첫 스냅샷이 지수 100.0. 스냅샷 A→B 구간은 A의 비중을 유지했다고 보고 구간 수익률을 chain-link함.
     이전 매매 손익은 계산에 넣지 않음. 전부 원화 환산(일별 USD/KRW), 환차익 포함. 세금은 반영하지 않는 세전 기준임 — 계좌·개인 소득에 따라 세율이 달라 비교가 성립하지 않기 때문임.
-    연환산 = (누적 지수/100)^(365/보유일수) − 1, 복리 기준. 1년 미만 구간은 추세를 연 단위로 환산한 참고치.<br>
+    연환산 = (누적 지수/100)^(365/보유일수) − 1, 복리 기준. 1년 미만 구간은 추세를 연 단위로 환산한 참고치. 3년·5년 환산 = 연환산 수익률이 그대로 이어졌다고 가정한 누적치.<br>
     <b>공개 범위</b> — 평가금·손익금·원금 등 금액은 일절 들어 있지 않음.<br>
     <b>미확인</b> — KODEX SK하이닉스 단일종목 레버리지(0193T0)의 배수를 확정하지 못해 1배로 계산함. ETHU는 2배로 봄.
     lever 스냅샷은 증권 앱 화면에서 환산했고 현금(예수금)을 0으로 가정함.
@@ -358,6 +358,16 @@ function annualOf(m) {
   if (!(days >= 1) || !(idx > 0)) return null;
   return { days, pct: ((idx / 100) ** (365 / days) - 1) * 100 };
 }
+/* N년 환산: 연환산 수익률이 그대로 이어졌을 때의 누적 수익률(%) */
+const projectOf = (a, n) => a ? ((1 + a.pct / 100) ** n - 1) * 100 : null;
+/* 큰 값은 천 단위 구분·소수 생략, 100% 미만은 소수 1자리 */
+const bigPct = v => {
+  if (v === null || !isFinite(v)) return "—";
+  const big = Math.abs(v) >= 100;
+  const body = Math.abs(v).toLocaleString("en-US", { minimumFractionDigits: big ? 0 : 1, maximumFractionDigits: big ? 0 : 1 });
+  return (v > 0 ? "+" : v < 0 ? "−" : "") + body + "%";
+};
+const valCls = v => v !== null && v > .05 ? "pos" : v !== null && v < -.05 ? "neg" : "";
 const annualCls = a => a && a.pct > .05 ? "pos" : a && a.pct < -.05 ? "neg" : "";
 
 function renderTabs() {
@@ -422,6 +432,8 @@ function renderHero() {
       <div><div class="k">누적 지수</div><div class="v">${f1(idxOf(m))}</div></div>
       <div><div class="k">연환산</div><div class="v ${annualCls(ann)}">${ann ? signed(ann.pct) + "%" : "—"}</div>
         ${ann ? `<div class="cap">${ann.days}일 복리 환산</div>` : ""}</div>
+      <div><div class="k">3년 환산</div><div class="v ${valCls(projectOf(ann, 3))}">${bigPct(projectOf(ann, 3))}</div></div>
+      <div><div class="k">5년 환산</div><div class="v ${valCls(projectOf(ann, 5))}">${bigPct(projectOf(ann, 5))}</div></div>
       <div><div class="k">기준일</div><div class="v">${asOfDate.slice(5)}</div></div>
     </div>`;
 }
@@ -785,16 +797,18 @@ function renderOverview() {
     <section class="card">
       <header><h2>멤버 비교</h2><p class="note">최신 스냅샷 기준. 등수는 매기지 않음.</p></header>
       <div class="tablewrap"><table>
-        <thead><tr><th scope="col">멤버</th><th scope="col">누적</th><th scope="col">지수</th><th scope="col">연환산</th>
+        <thead><tr><th scope="col">멤버</th><th scope="col">누적</th><th scope="col">지수</th><th scope="col">연환산</th><th scope="col">3년</th><th scope="col">5년</th>
           <th scope="col">종목</th><th scope="col">현금</th><th scope="col">최대 테마</th>
           <th scope="col">실효 익스포저</th><th scope="col">최대 단일</th></tr></thead>
         <tbody>${rows.map(x => `<tr>
           <th scope="row"><span class="tname"><span class="swatch" style="background:${x.c}"></span>${esc(x.m.id)}</span></th>
           ${heldOf(x.m)
-            ? `<td colspan="3" style="color:var(--ink-3)">계산 보류</td>`
+            ? `<td colspan="5" style="color:var(--ink-3)">계산 보류</td>`
             : `<td class="${x.r > .05 ? "pos" : x.r < -.05 ? "neg" : ""}">${signed(x.r)}%</td>
                <td>${f1(idxOf(x.m))}</td>
-               <td class="${annualCls(annualOf(x.m))}">${annualOf(x.m) ? signed(annualOf(x.m).pct) + "%" : "—"}</td>`}
+               <td class="${annualCls(annualOf(x.m))}">${annualOf(x.m) ? signed(annualOf(x.m).pct) + "%" : "—"}</td>
+               <td class="${valCls(projectOf(annualOf(x.m), 3))}">${bigPct(projectOf(annualOf(x.m), 3))}</td>
+               <td class="${valCls(projectOf(annualOf(x.m), 5))}">${bigPct(projectOf(annualOf(x.m), 5))}</td>`}
           <td>${x.a.equity.length}</td>
           <td>${f1(x.a.cash)}%</td>
           <td>${x.a.topTheme ? esc(x.a.topTheme.theme) + " " + f1(x.a.topTheme.w) + "%" : "—"}</td>
