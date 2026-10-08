@@ -324,6 +324,11 @@
       "n": "Amazon.com, Inc.",
       "th": "기타",
       "v": 1
+    },
+    "JAAA": {
+      "n": "Janus Henderson AAA CLO ETF",
+      "th": "지수·자산배분",
+      "lev": 1
     }
   },
   "alias": {
