@@ -1,0 +1,138 @@
+{
+  "member": "리",
+  "date": "2026-10-08",
+  "index": 100,
+  "note": "현재 보유현황 기준 갱신. 배당 계좌를 직투로 통합했으며 현금 비중은 근삿값. 과거 거래일별 비중은 복원하지 않음. TDF는 별도 표시하고 시세 미지원으로 수익률 계산 보류.",
+  "holdings": [
+    {
+      "ticker": "JAAA",
+      "weight": 24.08
+    },
+    {
+      "ticker": "000660.KS",
+      "weight": 13.31
+    },
+    {
+      "ticker": "TSLA",
+      "weight": 12.87
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 11.94
+    },
+    {
+      "ticker": "458730.KS",
+      "weight": 10.77
+    },
+    {
+      "ticker": "003230.KS",
+      "weight": 5.97
+    },
+    {
+      "ticker": "CASH",
+      "weight": 5.21
+    },
+    {
+      "ticker": "012330.KS",
+      "weight": 4.65
+    },
+    {
+      "ticker": "FUND-TDF2050-O",
+      "weight": 4.38
+    },
+    {
+      "ticker": "133690.KS",
+      "weight": 3.29
+    },
+    {
+      "ticker": "360750.KS",
+      "weight": 2.96
+    },
+    {
+      "ticker": "SPCX",
+      "weight": 0.57
+    }
+  ],
+  "scopes": [
+    {
+      "name": "직투",
+      "holdings": [
+        {
+          "ticker": "JAAA",
+          "weight": 36.17
+        },
+        {
+          "ticker": "000660.KS",
+          "weight": 19.99
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 19.32
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 17.93
+        },
+        {
+          "ticker": "CASH",
+          "weight": 5.73
+        },
+        {
+          "ticker": "SPCX",
+          "weight": 0.86
+        }
+      ]
+    },
+    {
+      "name": "ISA",
+      "holdings": [
+        {
+          "ticker": "003230.KS",
+          "weight": 50.97
+        },
+        {
+          "ticker": "012330.KS",
+          "weight": 39.71
+        },
+        {
+          "ticker": "CASH",
+          "weight": 9.32
+        }
+      ]
+    },
+    {
+      "name": "IRP",
+      "holdings": [
+        {
+          "ticker": "458730.KS",
+          "weight": 69.91
+        },
+        {
+          "ticker": "FUND-TDF2050-O",
+          "weight": 28.44
+        },
+        {
+          "ticker": "CASH",
+          "weight": 1.65
+        }
+      ]
+    },
+    {
+      "name": "연금저축",
+      "holdings": [
+        {
+          "ticker": "133690.KS",
+          "weight": 52.18
+        },
+        {
+          "ticker": "360750.KS",
+          "weight": 47.03
+        },
+        {
+          "ticker": "CASH",
+          "weight": 0.79
+        }
+      ]
+    }
+  ]
+}

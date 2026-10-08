@@ -346,7 +346,13 @@ function analyse(snap) {
    ══════════════════════════════════════════════════════════════ */
 let active = "__all__";
 
-const heldOf = m => (RESULTS && RESULTS.onHold && RESULTS.onHold[m.id]) || null;
+const heldOf = m => {
+  // 시세 갱신 전에도 미지원 자산을 포함한 과거 수익률을 확정값처럼 표시하지 않는다.
+  const unavailable = m.snapshots.flatMap(s => s.holdings)
+    .map(h => keyOf(h.t)).filter(t => INSTRUMENTS[t]?.pricing === "unavailable");
+  const held = [...new Set([...unavailable, ...((RESULTS && RESULTS.onHold && RESULTS.onHold[m.id]) || [])])];
+  return held.length ? held : null;
+};
 const idxOf = m => m.index ?? (m.snapshots.length ? m.snapshots[m.snapshots.length - 1].index : 100);
 function memberReturn(m) { return idxOf(m) - 100; }
 /* 연환산(CAGR) — 멤버 첫 스냅샷 → 기준일 달력일수 기준. 계산 불가면 null */

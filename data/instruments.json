@@ -324,6 +324,17 @@
       "n": "Amazon.com, Inc.",
       "th": "기타",
       "v": 1
+    },
+    "JAAA": {
+      "n": "Janus Henderson AAA CLO ETF",
+      "th": "지수·자산배분",
+      "lev": 1
+    },
+    "FUND-TDF2050-O": {
+      "n": "미래에셋전략배분적격TDF2050 혼합자산 종류O",
+      "th": "지수·자산배분",
+      "lev": 1,
+      "pricing": "unavailable"
     }
   },
   "alias": {
