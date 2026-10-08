@@ -1,0 +1,241 @@
+{
+  "member": "Marry",
+  "date": "2026-10-07",
+  "index": 100.0,
+  "note": "8/27 이후 SCHD를 매주 분할 매수하고 연금저축에서 TIGER 미국나스닥100TR(H)를 추가 매수함.\n지난 제출에서 직투로 잡았던 TIGER ETF 2종을 실제 보유 계좌인 연금저축으로 옮기고, 연금저축의 대기 현금을 반영함.",
+  "holdings": [
+    {
+      "ticker": "CASH",
+      "weight": 32.63
+    },
+    {
+      "ticker": "TSM",
+      "weight": 9.67
+    },
+    {
+      "ticker": "ABCL",
+      "weight": 6.55
+    },
+    {
+      "ticker": "SCHD",
+      "weight": 6.06
+    },
+    {
+      "ticker": "SPYM",
+      "weight": 5.6
+    },
+    {
+      "ticker": "000660.KS",
+      "weight": 5.32
+    },
+    {
+      "ticker": "381170.KS",
+      "weight": 5.01
+    },
+    {
+      "ticker": "005930.KS",
+      "weight": 4.49
+    },
+    {
+      "ticker": "SMH",
+      "weight": 3.84
+    },
+    {
+      "ticker": "XLV",
+      "weight": 3.44
+    },
+    {
+      "ticker": "XLP",
+      "weight": 3.33
+    },
+    {
+      "ticker": "AAPL",
+      "weight": 2.03
+    },
+    {
+      "ticker": "448300.KS",
+      "weight": 1.91
+    },
+    {
+      "ticker": "ARKF",
+      "weight": 1.88
+    },
+    {
+      "ticker": "SPY",
+      "weight": 1.49
+    },
+    {
+      "ticker": "TSLA",
+      "weight": 1.17
+    },
+    {
+      "ticker": "NVDA",
+      "weight": 0.97
+    },
+    {
+      "ticker": "434060.KS",
+      "weight": 0.96
+    },
+    {
+      "ticker": "QQQI",
+      "weight": 0.81
+    },
+    {
+      "ticker": "PLTR",
+      "weight": 0.79
+    },
+    {
+      "ticker": "JEPQ",
+      "weight": 0.75
+    },
+    {
+      "ticker": "KO",
+      "weight": 0.63
+    },
+    {
+      "ticker": "353200.KS",
+      "weight": 0.48
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 0.17
+    },
+    {
+      "ticker": "001740.KS",
+      "weight": 0.01
+    },
+    {
+      "ticker": "TQQQ",
+      "weight": 0.01
+    }
+  ],
+  "scopes": [
+    {
+      "name": "직투",
+      "holdings": [
+        {
+          "ticker": "CASH",
+          "weight": 3.2
+        },
+        {
+          "ticker": "TSM",
+          "weight": 15.74
+        },
+        {
+          "ticker": "ABCL",
+          "weight": 10.66
+        },
+        {
+          "ticker": "SCHD",
+          "weight": 9.86
+        },
+        {
+          "ticker": "SPYM",
+          "weight": 9.11
+        },
+        {
+          "ticker": "000660.KS",
+          "weight": 8.66
+        },
+        {
+          "ticker": "005930.KS",
+          "weight": 7.3
+        },
+        {
+          "ticker": "SMH",
+          "weight": 6.24
+        },
+        {
+          "ticker": "XLV",
+          "weight": 5.6
+        },
+        {
+          "ticker": "XLP",
+          "weight": 5.42
+        },
+        {
+          "ticker": "AAPL",
+          "weight": 3.3
+        },
+        {
+          "ticker": "ARKF",
+          "weight": 3.06
+        },
+        {
+          "ticker": "SPY",
+          "weight": 2.43
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 1.91
+        },
+        {
+          "ticker": "NVDA",
+          "weight": 1.58
+        },
+        {
+          "ticker": "QQQI",
+          "weight": 1.31
+        },
+        {
+          "ticker": "PLTR",
+          "weight": 1.29
+        },
+        {
+          "ticker": "JEPQ",
+          "weight": 1.22
+        },
+        {
+          "ticker": "KO",
+          "weight": 1.02
+        },
+        {
+          "ticker": "353200.KS",
+          "weight": 0.79
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 0.27
+        },
+        {
+          "ticker": "TQQQ",
+          "weight": 0.02
+        },
+        {
+          "ticker": "001740.KS",
+          "weight": 0.01
+        }
+      ]
+    },
+    {
+      "name": "연금저축",
+      "holdings": [
+        {
+          "ticker": "CASH",
+          "weight": 65.94
+        },
+        {
+          "ticker": "381170.KS",
+          "weight": 21.63
+        },
+        {
+          "ticker": "448300.KS",
+          "weight": 8.27
+        },
+        {
+          "ticker": "434060.KS",
+          "weight": 4.16
+        }
+      ]
+    },
+    {
+      "name": "MMF",
+      "holdings": [
+        {
+          "ticker": "CASH",
+          "weight": 100.0
+        }
+      ]
+    }
+  ]
+}

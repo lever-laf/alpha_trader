@@ -124,6 +124,15 @@
           "file": "lever.json"
         }
       ]
+    },
+    {
+      "date": "2026-10-07",
+      "members": [
+        {
+          "id": "Marry",
+          "file": "marry.json"
+        }
+      ]
     }
   ]
 }
