@@ -1,0 +1,48 @@
+name: Pages 배포
+
+# 기존 브랜치 배포(legacy)는 push 마다 빌드를 돌리고, 새 빌드가 진행 중인 빌드를 취소한다.
+# 멤버 제출 push 직후 제출 검증 봇이 데이터 커밋을 다시 push 하면 앞 배포가 취소돼
+# Deployments 에 error 가 남았다. 이 워크플로는 배포를 순서대로 처리한다.
+#
+# 봇 커밋은 GITHUB_TOKEN 으로 push 해 push 이벤트를 만들지 않으므로,
+# 데이터 갱신 배포는 제출 검증·시세 갱신이 끝난 뒤 workflow_run 으로 받는다.
+# 제출 파일만 바뀐 push 는 제출 검증 뒤에 한 번만 배포되도록 push 트리거에서 뺀다.
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "data/members/**"
+      - "data/instruments.json"
+  workflow_run:
+    workflows: ["제출 검증", "시세 갱신"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # 제출 검증은 모든 브랜치 push 에서 돌므로 main 의 실행만 배포한다.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
