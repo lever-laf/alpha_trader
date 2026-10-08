@@ -1,0 +1,64 @@
+{
+  "member": "lever",
+  "date": "2026-09-22",
+  "index": 100.0,
+  "note": "SPCX 추가 매수.",
+  "holdings": [
+    {
+      "ticker": "NVDA",
+      "weight": 30.08
+    },
+    {
+      "ticker": "SNDK",
+      "weight": 12.19
+    },
+    {
+      "ticker": "MU",
+      "weight": 11.8
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 7.56
+    },
+    {
+      "ticker": "SOXL",
+      "weight": 7.04
+    },
+    {
+      "ticker": "TSLA",
+      "weight": 6.94
+    },
+    {
+      "ticker": "IREN",
+      "weight": 4.55
+    },
+    {
+      "ticker": "TSLL",
+      "weight": 4.11
+    },
+    {
+      "ticker": "PLTR",
+      "weight": 3.98
+    },
+    {
+      "ticker": "ILMN",
+      "weight": 2.93
+    },
+    {
+      "ticker": "SSO",
+      "weight": 2.92
+    },
+    {
+      "ticker": "CRCL",
+      "weight": 2.34
+    },
+    {
+      "ticker": "SPCX",
+      "weight": 2.0
+    },
+    {
+      "ticker": "TQQQ",
+      "weight": 1.56
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "member": "lever",
+  "date": "2026-09-18",
+  "index": 100.0,
+  "note": "SPCX·ILMN 추가 매수. 나머지는 그대로 보유.",
+  "holdings": [
+    {
+      "ticker": "NVDA",
+      "weight": 30.85
+    },
+    {
+      "ticker": "SNDK",
+      "weight": 12.23
+    },
+    {
+      "ticker": "MU",
+      "weight": 11.56
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 7.95
+    },
+    {
+      "ticker": "TSLA",
+      "weight": 7.05
+    },
+    {
+      "ticker": "SOXL",
+      "weight": 6.05
+    },
+    {
+      "ticker": "IREN",
+      "weight": 4.62
+    },
+    {
+      "ticker": "PLTR",
+      "weight": 4.04
+    },
+    {
+      "ticker": "TSLL",
+      "weight": 4.04
+    },
+    {
+      "ticker": "ILMN",
+      "weight": 3.0
+    },
+    {
+      "ticker": "SSO",
+      "weight": 2.99
+    },
+    {
+      "ticker": "CRCL",
+      "weight": 2.4
+    },
+    {
+      "ticker": "SPCX",
+      "weight": 1.74
+    },
+    {
+      "ticker": "TQQQ",
+      "weight": 1.48
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "member": "lever",
+  "date": "2026-09-17",
+  "index": 100.0,
+  "note": "메모리(MU·SNDK)·NVDA·CRCL 일부 익절. 그 자금으로 SpaceX(SPCX) 신규 편입.",
+  "holdings": [
+    {
+      "ticker": "NVDA",
+      "weight": 31.92
+    },
+    {
+      "ticker": "MU",
+      "weight": 11.66
+    },
+    {
+      "ticker": "SNDK",
+      "weight": 11.56
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 8.29
+    },
+    {
+      "ticker": "TSLA",
+      "weight": 7.43
+    },
+    {
+      "ticker": "SOXL",
+      "weight": 5.89
+    },
+    {
+      "ticker": "IREN",
+      "weight": 4.51
+    },
+    {
+      "ticker": "TSLL",
+      "weight": 4.27
+    },
+    {
+      "ticker": "PLTR",
+      "weight": 4.21
+    },
+    {
+      "ticker": "SSO",
+      "weight": 3.14
+    },
+    {
+      "ticker": "ILMN",
+      "weight": 2.34
+    },
+    {
+      "ticker": "CRCL",
+      "weight": 2.33
+    },
+    {
+      "ticker": "TQQQ",
+      "weight": 1.53
+    },
+    {
+      "ticker": "SPCX",
+      "weight": 0.92
+    }
+  ]
+}

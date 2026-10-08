@@ -1,0 +1,64 @@
+{
+  "member": "lever",
+  "date": "2026-09-30",
+  "index": 100.0,
+  "note": "NVDA·TSLA 일부 익절. 나머지는 그대로 보유.",
+  "holdings": [
+    {
+      "ticker": "NVDA",
+      "weight": 30.47
+    },
+    {
+      "ticker": "MU",
+      "weight": 12.14
+    },
+    {
+      "ticker": "SNDK",
+      "weight": 11.89
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 7.84
+    },
+    {
+      "ticker": "SOXL",
+      "weight": 7.24
+    },
+    {
+      "ticker": "TSLA",
+      "weight": 6.06
+    },
+    {
+      "ticker": "PLTR",
+      "weight": 4.26
+    },
+    {
+      "ticker": "IREN",
+      "weight": 4.05
+    },
+    {
+      "ticker": "TSLL",
+      "weight": 3.81
+    },
+    {
+      "ticker": "ILMN",
+      "weight": 3.43
+    },
+    {
+      "ticker": "SSO",
+      "weight": 3.0
+    },
+    {
+      "ticker": "CRCL",
+      "weight": 2.15
+    },
+    {
+      "ticker": "SPCX",
+      "weight": 2.06
+    },
+    {
+      "ticker": "TQQQ",
+      "weight": 1.6
+    }
+  ]
+}

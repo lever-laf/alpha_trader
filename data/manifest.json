@@ -88,6 +88,42 @@
           "file": "marry.json"
         }
       ]
+    },
+    {
+      "date": "2026-09-17",
+      "members": [
+        {
+          "id": "lever",
+          "file": "lever.json"
+        }
+      ]
+    },
+    {
+      "date": "2026-09-18",
+      "members": [
+        {
+          "id": "lever",
+          "file": "lever.json"
+        }
+      ]
+    },
+    {
+      "date": "2026-09-22",
+      "members": [
+        {
+          "id": "lever",
+          "file": "lever.json"
+        }
+      ]
+    },
+    {
+      "date": "2026-09-30",
+      "members": [
+        {
+          "id": "lever",
+          "file": "lever.json"
+        }
+      ]
     }
   ]
 }
