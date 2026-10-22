@@ -1,0 +1,130 @@
+{
+  "member": "리",
+  "date": "2026-10-15",
+  "index": 100,
+  "note": "직투 JAAA 추가 일부 매도, SK하이닉스 소량 추가 매수. 잔여 대금은 현금으로 보유. 나머지 계좌는 변동 없음.",
+  "holdings": [
+    {
+      "ticker": "JAAA",
+      "weight": 15.77
+    },
+    {
+      "ticker": "000660.KS",
+      "weight": 15.77
+    },
+    {
+      "ticker": "TSLA",
+      "weight": 13.53
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 13.03
+    },
+    {
+      "ticker": "458730.KS",
+      "weight": 12.27
+    },
+    {
+      "ticker": "CASH",
+      "weight": 11.25
+    },
+    {
+      "ticker": "003230.KS",
+      "weight": 6.39
+    },
+    {
+      "ticker": "012330.KS",
+      "weight": 4.76
+    },
+    {
+      "ticker": "133690.KS",
+      "weight": 3.44
+    },
+    {
+      "ticker": "360750.KS",
+      "weight": 3.21
+    },
+    {
+      "ticker": "SPCX",
+      "weight": 0.58
+    }
+  ],
+  "scopes": [
+    {
+      "name": "직투",
+      "holdings": [
+        {
+          "ticker": "JAAA",
+          "weight": 23.06
+        },
+        {
+          "ticker": "000660.KS",
+          "weight": 23.06
+        },
+        {
+          "ticker": "TSLA",
+          "weight": 19.78
+        },
+        {
+          "ticker": "GOOGL",
+          "weight": 19.04
+        },
+        {
+          "ticker": "CASH",
+          "weight": 14.22
+        },
+        {
+          "ticker": "SPCX",
+          "weight": 0.84
+        }
+      ]
+    },
+    {
+      "name": "ISA",
+      "holdings": [
+        {
+          "ticker": "003230.KS",
+          "weight": 51.76
+        },
+        {
+          "ticker": "012330.KS",
+          "weight": 38.6
+        },
+        {
+          "ticker": "CASH",
+          "weight": 9.64
+        }
+      ]
+    },
+    {
+      "name": "IRP",
+      "holdings": [
+        {
+          "ticker": "458730.KS",
+          "weight": 97.79
+        },
+        {
+          "ticker": "CASH",
+          "weight": 2.21
+        }
+      ]
+    },
+    {
+      "name": "연금저축",
+      "holdings": [
+        {
+          "ticker": "133690.KS",
+          "weight": 51.29
+        },
+        {
+          "ticker": "360750.KS",
+          "weight": 47.9
+        },
+        {
+          "ticker": "CASH",
+          "weight": 0.81
+        }
+      ]
+    }
+  ]
+}
