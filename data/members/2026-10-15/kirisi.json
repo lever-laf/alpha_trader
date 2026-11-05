@@ -1,0 +1,56 @@
+{
+  "member": "Kirisi",
+  "date": "2026-10-15",
+  "index": 93.9262,
+  "note": "스페이스X 추가 매수.",
+  "holdings": [
+    {
+      "ticker": "O",
+      "weight": 20.79
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 19.39
+    },
+    {
+      "ticker": "PFE",
+      "weight": 14.03
+    },
+    {
+      "ticker": "MO",
+      "weight": 12.17
+    },
+    {
+      "ticker": "GLDM",
+      "weight": 9.36
+    },
+    {
+      "ticker": "SPCX",
+      "weight": 8.15
+    },
+    {
+      "ticker": "NKE",
+      "weight": 5.11
+    },
+    {
+      "ticker": "POET",
+      "weight": 4.87
+    },
+    {
+      "ticker": "UPS",
+      "weight": 3.21
+    },
+    {
+      "ticker": "T",
+      "weight": 2.56
+    },
+    {
+      "ticker": "PEP",
+      "weight": 0.31
+    },
+    {
+      "ticker": "AMZN",
+      "weight": 0.05
+    }
+  ]
+}

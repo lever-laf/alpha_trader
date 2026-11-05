@@ -1,0 +1,60 @@
+{
+  "member": "Kirisi",
+  "date": "2026-10-22",
+  "index": 92.727,
+  "note": "코카콜라 신규 편입.",
+  "holdings": [
+    {
+      "ticker": "O",
+      "weight": 20.74
+    },
+    {
+      "ticker": "GOOGL",
+      "weight": 18.45
+    },
+    {
+      "ticker": "PFE",
+      "weight": 14.08
+    },
+    {
+      "ticker": "MO",
+      "weight": 12.17
+    },
+    {
+      "ticker": "SPCX",
+      "weight": 9.73
+    },
+    {
+      "ticker": "GLDM",
+      "weight": 9.11
+    },
+    {
+      "ticker": "NKE",
+      "weight": 5.09
+    },
+    {
+      "ticker": "POET",
+      "weight": 4.49
+    },
+    {
+      "ticker": "UPS",
+      "weight": 3.22
+    },
+    {
+      "ticker": "T",
+      "weight": 2.5
+    },
+    {
+      "ticker": "PEP",
+      "weight": 0.32
+    },
+    {
+      "ticker": "KO",
+      "weight": 0.05
+    },
+    {
+      "ticker": "AMZN",
+      "weight": 0.05
+    }
+  ]
+}
